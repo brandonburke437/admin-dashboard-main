@@ -1,21 +1,60 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router"; // <-- Import useNavigate
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import PhoneInput from "../form/group-input/PhoneInput";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [phone, setPhone] = useState("");
-  // const countries = [
-  //   { code: "US", label: "+1" },
-  //   { code: "GB", label: "+44" },
-  //   { code: "CA", label: "+1" },
-  //   { code: "AU", label: "+61" },
-  // ];
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const navigate = useNavigate(); // <-- Initialize navigate
+
+  // Only allow digits in phone input
+  const handlePhoneChange = (value: string) => {
+    const digitsOnly = value.replace(/\D/g, "");
+    setPhone(digitsOnly);
+  };
+
+  const validate = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!fname.trim()) newErrors.fname = "First name is required";
+    if (!lname.trim()) newErrors.lname = "Last name is required";
+    if (!phone.trim()) newErrors.phone = "Phone number is required";
+    if (phone && phone.length < 8)
+      newErrors.phone = "Phone number is too short";
+    if (!email.trim()) newErrors.email = "Email is required";
+    else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email))
+      newErrors.email = "Invalid email address";
+    if (!password) newErrors.password = "Password is required";
+    if (password && password.length < 6)
+      newErrors.password = "Password must be at least 6 characters";
+    if (!confirmPassword) newErrors.confirmPassword = "Confirm your password";
+    if (password && confirmPassword && password !== confirmPassword)
+      newErrors.confirmPassword = "Passwords do not match";
+    if (!isChecked) newErrors.terms = "You must agree to the terms";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validate()) {
+      toast.success("Your Account has been created successfully!");
+      setTimeout(() => {
+        navigate("/signin");
+      }, 2000); // 2 seconds delay before redirecting
+    }
+  };
 
   return (
     <div className="flex flex-col flex-1 w-full overflow-y-auto lg:w-1/2 no-scrollbar">
@@ -40,7 +79,7 @@ export default function SignUpForm() {
           </div>
           <div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
-              {/* <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
+              <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
                 <svg
                   width="20"
                   height="20"
@@ -66,8 +105,8 @@ export default function SignUpForm() {
                   />
                 </svg>
                 Sign up with Google
-              </button> */}
-              {/* <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
+              </button>
+              <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
                 <svg
                   width="21"
                   className="fill-current"
@@ -76,12 +115,15 @@ export default function SignUpForm() {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path d="M15.6705 1.875H18.4272L12.4047 8.75833L19.4897 18.125H13.9422L9.59717 12.4442L4.62554 18.125H1.86721L8.30887 10.7625L1.51221 1.875H7.20054L11.128 7.0675L15.6705 1.875ZM14.703 16.475H16.2305L6.37054 3.43833H4.73137L14.703 16.475Z" />
+                  <path
+                    d="M16.715 10.857c-.02-2.13 1.74-3.146 1.82-3.194-1-1.46-2.56-1.66-3.11-1.68-1.32-.13-2.58.77-3.25.77-.67 0-1.7-.75-2.8-.73-1.44.02-2.77.84-3.51 2.13-1.5 2.6-.38 6.45 1.07 8.56.71 1.03 1.56 2.18 2.68 2.14 1.08-.04 1.49-.69 2.8-.69 1.31 0 1.67.69 2.81.67 1.16-.02 1.89-1.05 2.59-2.08.82-1.19 1.16-2.34 1.18-2.4-.03-.01-2.26-.87-2.28-3.45zm-2.14-6.31c.6-.73 1-1.75.89-2.77-.86.03-1.89.57-2.5 1.3-.55.64-1.04 1.67-.86 2.65.91.07 1.86-.46 2.47-1.18z"
+                    fill="currentColor"
+                  />
                 </svg>
-                Sign up with X
-              </button> */}
+                Continue with Apple
+              </button>
             </div>
-            {/* <div className="relative py-3 sm:py-5">
+            <div className="relative py-3 sm:py-5">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-200 dark:border-gray-800"></div>
               </div>
@@ -90,8 +132,8 @@ export default function SignUpForm() {
                   Or
                 </span>
               </div>
-            </div> */}
-            <form>
+            </div>
+            <form onSubmit={handleSubmit}>
               <div className="space-y-5">
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   {/* <!-- First Name --> */}
@@ -103,8 +145,15 @@ export default function SignUpForm() {
                       type="text"
                       id="fname"
                       name="fname"
+                      value={fname}
+                      onChange={(e) => setFname(e.target.value)}
                       placeholder="Enter your first name"
                     />
+                    {errors.fname && (
+                      <span className="text-error-500 text-xs">
+                        {errors.fname}
+                      </span>
+                    )}
                   </div>
                   {/* <!-- Last Name --> */}
                   <div className="sm:col-span-1">
@@ -115,8 +164,15 @@ export default function SignUpForm() {
                       type="text"
                       id="lname"
                       name="lname"
+                      value={lname}
+                      onChange={(e) => setLname(e.target.value)}
                       placeholder="Enter your last name"
                     />
+                    {errors.lname && (
+                      <span className="text-error-500 text-xs">
+                        {errors.lname}
+                      </span>
+                    )}
                   </div>
                 </div>
                 {/* Phone Number */}
@@ -130,9 +186,14 @@ export default function SignUpForm() {
                       { code: "NG", dialCode: "+234" },
                     ]}
                     value={phone}
-                    onChange={setPhone}
+                    onChange={handlePhoneChange}
                     selectPosition="start"
                   />
+                  {errors.phone && (
+                    <span className="text-error-500 text-xs">
+                      {errors.phone}
+                    </span>
+                  )}
                 </div>
                 {/* <!-- Email --> */}
                 <div>
@@ -143,8 +204,15 @@ export default function SignUpForm() {
                     type="email"
                     id="email"
                     name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
                   />
+                  {errors.email && (
+                    <span className="text-error-500 text-xs">
+                      {errors.email}
+                    </span>
+                  )}
                 </div>
                 {/* <!-- Password --> */}
                 <div>
@@ -155,6 +223,8 @@ export default function SignUpForm() {
                     <Input
                       placeholder="Enter your password"
                       type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <span
                       onClick={() => setShowPassword(!showPassword)}
@@ -167,6 +237,11 @@ export default function SignUpForm() {
                       )}
                     </span>
                   </div>
+                  {errors.password && (
+                    <span className="text-error-500 text-xs">
+                      {errors.password}
+                    </span>
+                  )}
                 </div>
 
                 {/* <!-- Confirm Password --> */}
@@ -178,6 +253,8 @@ export default function SignUpForm() {
                     <Input
                       placeholder="Enter your password"
                       type={showPassword ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                     <span
                       onClick={() => setShowPassword(!showPassword)}
@@ -190,6 +267,11 @@ export default function SignUpForm() {
                       )}
                     </span>
                   </div>
+                  {errors.confirmPassword && (
+                    <span className="text-error-500 text-xs">
+                      {errors.confirmPassword}
+                    </span>
+                  )}
                 </div>
                 {/* <!-- Checkbox --> */}
                 <div className="flex items-center gap-3">
@@ -209,9 +291,15 @@ export default function SignUpForm() {
                     </span>
                   </p>
                 </div>
-                {/* <!-- Button --> */}
+                {errors.terms && (
+                  <span className="text-error-500 text-xs">{errors.terms}</span>
+                )}
+                {/* <!-- Sign Up Button --> */}
                 <div>
-                  <button className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-amber-500 shadow-theme-xs hover:bg-black">
+                  <button
+                    type="submit"
+                    className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-amber-500 shadow-theme-xs hover:bg-black"
+                  >
                     Sign Up
                   </button>
                 </div>
@@ -220,7 +308,7 @@ export default function SignUpForm() {
 
             <div className="mt-5">
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-                Already have an account? {""}
+                Already have an account?{" "}
                 <Link
                   to="/signin"
                   className="text-amber-500 hover:text-amber-600 dark:text-amber-400"
@@ -232,6 +320,7 @@ export default function SignUpForm() {
           </div>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 }

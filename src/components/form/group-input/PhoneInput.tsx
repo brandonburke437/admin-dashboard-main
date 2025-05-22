@@ -15,7 +15,7 @@ interface PhoneInputProps {
 
 const PhoneInput: React.FC<PhoneInputProps> = ({
   countries,
-  placeholder = "+1 (555) 000-0000",
+  placeholder = "+233 123 456 789",
   onChange,
   selectPosition = "start",
   value,
