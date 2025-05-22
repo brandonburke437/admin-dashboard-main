@@ -1,10 +1,18 @@
 import DataTable from "../../components/tables/BasicTables/DataTable";
+import PageBreadcrumb from "../../components/common/PageBreadCrumb";
+import ComponentCard from "../../components/common/ComponentCard";
+import PageMeta from "../../components/common/PageMeta";
 
-export default function SomeOtherComponent() {
+export default function DataTables() {
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Product Table</h1>
-      <DataTable />
-    </div>
+    <>
+      <PageMeta title="Applications" description="" />
+      <PageBreadcrumb pageTitle="Your Applications" />
+      <div className="space-y-6">
+        <ComponentCard title="Your Applications">
+          <DataTable />
+        </ComponentCard>
+      </div>
+    </>
   );
 }

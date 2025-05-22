@@ -4,10 +4,19 @@ import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
+import PhoneInput from "../form/group-input/PhoneInput";
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [phone, setPhone] = useState("");
+  // const countries = [
+  //   { code: "US", label: "+1" },
+  //   { code: "GB", label: "+44" },
+  //   { code: "CA", label: "+1" },
+  //   { code: "AU", label: "+61" },
+  // ];
+
   return (
     <div className="flex flex-col flex-1 w-full overflow-y-auto lg:w-1/2 no-scrollbar">
       <div className="w-full max-w-md mx-auto mb-5 sm:pt-10">
@@ -110,6 +119,21 @@ export default function SignUpForm() {
                     />
                   </div>
                 </div>
+                {/* Phone Number */}
+                <div>
+                  <Label>
+                    Phone<span className="text-error-500">*</span>
+                  </Label>
+                  <PhoneInput
+                    countries={[
+                      { code: "GH", dialCode: "+233" },
+                      { code: "NG", dialCode: "+234" },
+                    ]}
+                    value={phone}
+                    onChange={setPhone}
+                    selectPosition="start"
+                  />
+                </div>
                 {/* <!-- Email --> */}
                 <div>
                   <Label>
@@ -145,8 +169,8 @@ export default function SignUpForm() {
                   </div>
                 </div>
 
-                 {/* <!-- Confirm Password --> */}
-                 <div>
+                {/* <!-- Confirm Password --> */}
+                <div>
                   <Label>
                     Confirm Password<span className="text-error-500">*</span>
                   </Label>

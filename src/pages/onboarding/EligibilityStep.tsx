@@ -1,66 +1,76 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ComponentCard from "../../components/common/ComponentCard";
 import Label from "../../components/form/Label";
-// import TextArea from "../../components/form/input/TextArea";
 import Radio from "../../components/form/input/Radio";
-import Switch from "../../components/form/switch/Switch";
 import OnboardingLayout from "./OnboardingLayout";
+import Flatpickr from "react-flatpickr";
+import { CalenderIcon } from "../../icons";
+
+const regions = [
+  "Greater Accra",
+  "Ashanti",
+  "Eastern",
+  "Western",
+  "Northern",
+  "Volta",
+  "Central",
+  "Upper East",
+  "Upper West",
+  "Bono",
+  "Bono East",
+  "Ahafo",
+  "Savannah",
+  "North East",
+  "Oti",
+  "Western North",
+];
+const districtsByRegion: Record<string, string[]> = {
+  "Greater Accra": ["Accra Metropolis", "Tema", "Ga East"],
+  Ashanti: ["Kumasi", "Obuasi", "Ejisu"],
+  // ...add all regions and their districts
+};
 
 const EligibilityStep = () => {
-  // const { setData } = useOnboarding();
   const navigate = useNavigate();
 
+  // Profile fields
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [dob, setDob] = useState("");
-  const [gender, setGender] = useState("");
-  const [phone, setPhone] = useState("+233");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [isGhanaian, setIsGhanaian] = useState<boolean | null>(null);
-  const [admissionType, setAdmissionType] = useState("");
-  const [institution, setInstitution] = useState("");
-  const [isNursingCollege, setIsNursingCollege] = useState<boolean | null>(
-    null
-  );
-  const [isStemLecturer, setIsStemLecturer] = useState<boolean | null>(null);
-  const [nationalId, setNationalId] = useState("");
-  const [passportPreview, setPassportPreview] = useState<string | null>(null);
+  const [birthPlace, setBirthPlace] = useState("");
+  const [physicallyChallenged, setPhysicallyChallenged] = useState<string>("");
+  const [gender, setGender] = useState("");
+  const [region, setRegion] = useState("");
+  const [district, setDistrict] = useState("");
+  const [residentAddressType, setResidentAddressType] =
+    useState("Post Office Box");
+  const [residentAddress, setResidentAddress] = useState("");
+  const [residentGPS, setResidentGPS] = useState("");
 
-  const handlePassportUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      if (file.type.startsWith("image/")) {
-        setPassportPreview(URL.createObjectURL(file));
-      } else {
-        alert("Please upload a valid image file.");
-      }
-    }
+  const handleDateChange = (date: Date[]) => {
+    setDateOfBirth(date[0].toLocaleDateString()); // Handle selected date and format it
   };
 
+  const districtOptions = region ? districtsByRegion[region] || [] : [];
+
   const handleProceed = () => {
-    // setData((prev) => ({
-    //   ...prev,
-    //   firstName,
-    //   lastName,
-    //   dob,
-    //   phone,
-    //   email,
-    // }));
-    navigate("/onboarding/application-type");
+    // Save data logic here
+    navigate("/onboarding/emergency-contact");
   };
 
   return (
-    <OnboardingLayout currentStep={2} totalSteps={5}>
+    <OnboardingLayout currentStep={1} totalSteps={6}>
       <div className="max-w-4xl mx-auto p-6 space-y-6">
         <ComponentCard title="Eligibility Information">
-          {/* Name Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label>First Name</Label>
               <input
                 type="text"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Enter First Name"
@@ -70,190 +80,157 @@ const EligibilityStep = () => {
               <Label>Last Name</Label>
               <input
                 type="text"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Enter Last Name"
               />
             </div>
-          </div>
-
-          {/* DOB */}
-          <div>
-            <Label>Date of Birth</Label>
-            <input
-              type="date"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-              value={dob}
-              onChange={(e) => setDob(e.target.value)}
-            />
-          </div>
-
-          {/* Gender */}
-          <div>
-            <Label>Gender</Label>
-            <select
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-            >
-              <option value="">Select Gender</option>
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-            </select>
-          </div>
-
-          {/* Phone and Email */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label>Phone Number</Label>
+              <Label htmlFor="datePicker">Date of Birth</Label>
+              <div className="relative w-full flatpickr-wrapper">
+                <Flatpickr
+                  value={dateOfBirth} // Set the value to the state
+                  onChange={handleDateChange} // Handle the date change
+                  options={{
+                    dateFormat: "Y-m-d", // Set the date format
+                  }}
+                  placeholder="Select an option"
+                  className="h-11 w-full rounded-lg border appearance-none px-4 py-2.5 text-sm shadow-theme-xs placeholder:text-gray-400 focus:outline-hidden focus:ring-3  dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30  bg-transparent text-gray-800 border-gray-300 focus:border-amber-300 focus:ring-amber-500/20 dark:border-gray-700  dark:focus:border-amber-800"
+                />
+                <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
+                  <CalenderIcon className="size-6" />
+                </span>
+              </div>
+            </div>
+            <div>
+              <Label>Phone</Label>
               <input
                 type="tel"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
+                placeholder="Enter Phone Number"
               />
             </div>
             <div>
-              <Label>Email Address</Label>
+              <Label>Email</Label>
               <input
                 type="email"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter Email"
               />
             </div>
-          </div>
-
-          {/* Are you Ghanaian */}
-          <div>
-            <Label>Are you a Ghanaian?</Label>
-            <div className="flex space-x-4">
-              <Radio
-                id="ghanaian-yes"
-                name="isGhanaian"
-                value="Yes"
-                checked={isGhanaian === true}
-                onChange={() => setIsGhanaian(true)}
-                label="Yes"
-              />
-              <Radio
-                id="ghanaian-no"
-                name="isGhanaian"
-                value="No"
-                checked={isGhanaian === false}
-                onChange={() => setIsGhanaian(false)}
-                label="No"
-              />
-            </div>
-          </div>
-
-          {/* Admission Type */}
-          <div>
-            <Label>Admission Type</Label>
-            <div className="flex space-x-4">
-              <Radio
-                id="undergraduate"
-                name="admissionType"
-                value="Undergraduate"
-                checked={admissionType === "Undergraduate"}
-                onChange={(value) => setAdmissionType(value)}
-                label="Undergraduate"
-              />
-              <Radio
-                id="postgraduate"
-                name="admissionType"
-                value="Postgraduate"
-                checked={admissionType === "Postgraduate"}
-                onChange={(value) => setAdmissionType(value)}
-                label="Postgraduate"
-              />
-            </div>
-          </div>
-
-          {/* Institution Name */}
-          <div>
-            <Label>Institution Name</Label>
-            <input
-              type="text"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-              value={institution}
-              onChange={(e) => setInstitution(e.target.value)}
-              placeholder="Start typing institution name..."
-            />
-          </div>
-
-          {/* Is it Nursing/Teacher Training? */}
-          <div>
-            <Label>
-              Is your institution a Nursing/Teacher Training College?
-            </Label>
-            <div className="flex space-x-4">
-              <Switch
-                label="Yes"
-                defaultChecked={isNursingCollege === true}
-                onChange={() => setIsNursingCollege(true)}
-              />
-              <Switch
-                label="No"
-                defaultChecked={isNursingCollege === false}
-                onChange={() => setIsNursingCollege(false)}
-              />
-            </div>
-          </div>
-
-          {/* Are you STEM Lecturer (PG only) */}
-          {admissionType === "Postgraduate" && (
             <div>
-              <Label>Are you a teacher/lecturer in STEM or TVET?</Label>
+              <Label>Birth Place</Label>
+              <input
+                type="text"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                value={birthPlace}
+                onChange={(e) => setBirthPlace(e.target.value)}
+                placeholder="Enter Birth Place"
+              />
+            </div>
+            <div>
+              <Label>Physically Challenged</Label>
               <div className="flex space-x-4">
-                <Switch
+                <Radio
+                  id="physicallyChallengedYes"
+                  name="physicallyChallenged"
+                  value="Yes"
+                  checked={physicallyChallenged === "Yes"}
+                  onChange={() => setPhysicallyChallenged("Yes")}
                   label="Yes"
-                  defaultChecked={isStemLecturer === true}
-                  onChange={() => setIsStemLecturer(true)}
                 />
-                <Switch
+                <Radio
+                  id="physicallyChallengedNo"
+                  name="physicallyChallenged"
+                  value="No"
+                  checked={physicallyChallenged === "No"}
+                  onChange={() => setPhysicallyChallenged("No")}
                   label="No"
-                  defaultChecked={isStemLecturer === false}
-                  onChange={() => setIsStemLecturer(false)}
                 />
               </div>
             </div>
-          )}
-
-          {/* National ID */}
-          <div>
-            <Label>Ghanaian National ID / Birth Cert No.</Label>
-            <input
-              type="text"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-              value={nationalId}
-              onChange={(e) => setNationalId(e.target.value)}
-              placeholder="Enter National ID or Birth Cert No."
-            />
-          </div>
-
-          {/* Passport Upload */}
-          <div>
-            <Label>Passport Picture Upload</Label>
-            <input
-              type="file"
-              accept="image/*"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-              onChange={handlePassportUpload}
-            />
-            {passportPreview && (
-              <img
-                src={passportPreview}
-                alt="Passport Preview"
-                className="mt-4 w-32 h-32 object-cover rounded-full border"
+            <div>
+              <Label>Gender</Label>
+              <select
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+              >
+                <option value="">Select Gender</option>
+                <option>Male</option>
+                <option>Female</option>
+              </select>
+            </div>
+            <div>
+              <Label>Region</Label>
+              <select
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                value={region}
+                onChange={(e) => setRegion(e.target.value)}
+              >
+                <option value="">Select Region</option>
+                {regions.map((r) => (
+                  <option key={r}>{r}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <Label>District</Label>
+              <select
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                value={district}
+                onChange={(e) => setDistrict(e.target.value)}
+              >
+                <option value="">Select District</option>
+                {districtOptions.map((d) => (
+                  <option key={d}>{d}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <Label>Resident Address Type</Label>
+              <select
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                value={residentAddressType}
+                onChange={(e) => setResidentAddressType(e.target.value)}
+              >
+                <option>Post Office Box</option>
+                <option>GPS</option>
+              </select>
+            </div>
+            <div>
+              <Label>Resident Address</Label>
+              <input
+                type="text"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                value={residentAddress}
+                onChange={(e) => setResidentAddress(e.target.value)}
+                placeholder={
+                  residentAddressType === "GPS"
+                    ? "Enter GPS Address"
+                    : "Enter Post Office Box"
+                }
               />
+            </div>
+            {residentAddressType === "GPS" && (
+              <div>
+                <Label>GPS</Label>
+                <input
+                  type="text"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                  value={residentGPS}
+                  onChange={(e) => setResidentGPS(e.target.value)}
+                  placeholder="Enter GPS"
+                />
+              </div>
             )}
           </div>
         </ComponentCard>
-
-        {/* Proceed Button */}
         <div className="text-right">
           <button
             onClick={handleProceed}

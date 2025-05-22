@@ -20,6 +20,7 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import OnboardingRoutes from "./pages/onboarding/onboardingRoutes";
 import { OnboardingProvider } from "./context/OnboardingContext";
+import DataTables from "./pages/Tables/DataTables";
 
 export default function App() {
   return (
@@ -42,6 +43,7 @@ export default function App() {
 
             {/* Tables */}
             <Route path="/basic-tables" element={<BasicTables />} />
+            <Route path="/data-tables" element={<DataTables />} />
 
             {/* Ui Elements */}
             <Route path="/alerts" element={<Alerts />} />
