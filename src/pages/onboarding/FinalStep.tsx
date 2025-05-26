@@ -35,7 +35,7 @@ const FinalStep: React.FC = () => {
     <OnboardingLayout currentStep={6} totalSteps={6}>
       <div className="max-w-4xl mx-auto p-6 space-y-6">
         <ComponentCard title="Declaration">
-          <div className="mb-4 text-sm text-gray-700">
+          <div className="mb-4 text-sm text-gray-700 dark:text-white">
             <p>
               Misrepresentation in any material form renders the application
               null and void. Any award made based on misrepresentation shall be
@@ -62,7 +62,7 @@ const FinalStep: React.FC = () => {
             <Label>Type your legal name</Label>
             <input
               type="text"
-              className="w-full px-4 py-2 border rounded-lg mb-1"
+              className="w-full dark:text-gray-400 px-4 py-2 border rounded-lg mb-1"
               value={declarationName}
               onChange={(e) => setDeclarationName(e.target.value)}
               placeholder="Enter your legal name"
@@ -80,7 +80,10 @@ const FinalStep: React.FC = () => {
                 checked={isConfirmed}
                 onChange={(e) => setIsConfirmed(e.target.checked)}
               />
-              <label htmlFor="confirm" className="text-gray-700">
+              <label
+                htmlFor="confirm"
+                className="text-gray-700 dark:text-gray-400"
+              >
                 I confirm that the information provided is accurate and I agree
                 to the declaration above.
               </label>

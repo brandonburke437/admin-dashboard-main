@@ -35,7 +35,7 @@ export default function EcommerceMetrics() {
             to="/onboarding"
             className="mt-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 text-center"
           >
-            Add Application
+            Apply Now
           </Link>
         </div>
       </div>

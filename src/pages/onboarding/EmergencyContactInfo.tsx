@@ -83,7 +83,7 @@ const EmergencyContact = () => {
               <Label>Name of Emergency Contact</Label>
               <input
                 type="text"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border dark:text-white border-gray-300 rounded-lg"
                 value={emName}
                 onChange={(e) => setEmName(e.target.value)}
                 placeholder="Enter Name"
@@ -96,7 +96,7 @@ const EmergencyContact = () => {
               <Label>Relationship</Label>
               <input
                 type="text"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 dark:text-white border border-gray-300 rounded-lg"
                 value={emRelationship}
                 onChange={(e) => setEmRelationship(e.target.value)}
                 placeholder="Enter Relationship"
@@ -111,7 +111,7 @@ const EmergencyContact = () => {
               <Label>Phone</Label>
               <input
                 type="tel"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 dark:text-white border border-gray-300 rounded-lg"
                 value={emPhone}
                 onChange={(e) => setEmPhone(e.target.value)}
                 placeholder="Enter Phone Number"
@@ -124,7 +124,7 @@ const EmergencyContact = () => {
               <Label>Email</Label>
               <input
                 type="email"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border dark:text-white border-gray-300 rounded-lg"
                 value={emEmail}
                 onChange={(e) => setEmEmail(e.target.value)}
                 placeholder="Enter Email"
@@ -136,7 +136,7 @@ const EmergencyContact = () => {
             <div>
               <Label>Resident Address Type</Label>
               <select
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border dark:text-gray-400 border-gray-300 rounded-lg"
                 value={emAddressType}
                 onChange={(e) => setEmAddressType(e.target.value)}
               >
@@ -148,7 +148,7 @@ const EmergencyContact = () => {
               <Label>Resident Address</Label>
               <input
                 type="text"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border dark:text-gray-400 border-gray-300 rounded-lg"
                 value={emAddress}
                 onChange={(e) => setEmAddress(e.target.value)}
                 placeholder={
@@ -166,7 +166,7 @@ const EmergencyContact = () => {
             <div>
               <Label>Region</Label>
               <select
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border dark:text-gray-400 border-gray-300 rounded-lg"
                 value={emRegion}
                 onChange={(e) => setEmRegion(e.target.value)}
               >
@@ -184,7 +184,7 @@ const EmergencyContact = () => {
             <div>
               <Label>District</Label>
               <select
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border dark:text-gray-400 border-gray-300 rounded-lg"
                 value={emDistrict}
                 onChange={(e) => setEmDistrict(e.target.value)}
               >
@@ -203,7 +203,7 @@ const EmergencyContact = () => {
               <Label>Occupation</Label>
               <input
                 type="text"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border dark:text-white  border-gray-300 rounded-lg"
                 value={emOccupation}
                 onChange={(e) => setEmOccupation(e.target.value)}
                 placeholder="Enter Occupation"
@@ -218,7 +218,7 @@ const EmergencyContact = () => {
               <Label>Employer Name</Label>
               <input
                 type="text"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-4 py-2 border dark:text-white border-gray-300 rounded-lg"
                 value={emEmployer}
                 onChange={(e) => setEmEmployer(e.target.value)}
                 placeholder="Enter Employer Name"
@@ -236,7 +236,7 @@ const EmergencyContact = () => {
         <div className="flex justify-between">
           <button
             onClick={handleReturn}
-            className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-lg transition duration-300"
+            className="bg-gray-500 hover:bg-gray-600 dark:text-white text-white font-semibold py-2 px-6 rounded-lg transition duration-300"
           >
             Return
           </button>

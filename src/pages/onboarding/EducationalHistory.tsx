@@ -134,7 +134,7 @@ const UploadDocumentsStep: React.FC = () => {
                 <Label>Institution</Label>
                 <input
                   type="text"
-                  className="w-full px-4 py-2 border rounded-lg"
+                  className="w-full px-4 dark:text-white py-2 border rounded-lg"
                   value={ed.institution}
                   onChange={(e) =>
                     handleEducationChange(idx, "institution", e.target.value)
@@ -145,7 +145,7 @@ const UploadDocumentsStep: React.FC = () => {
               <div>
                 <Label>Level</Label>
                 <select
-                  className="w-full px-4 py-2 border rounded-lg"
+                  className="w-full px-4 py-2 dark:text-gray-500 border rounded-lg"
                   value={ed.level}
                   onChange={(e) =>
                     handleEducationChange(idx, "level", e.target.value)
@@ -161,7 +161,7 @@ const UploadDocumentsStep: React.FC = () => {
                 <Label>Programme</Label>
                 <input
                   type="text"
-                  className="w-full px-4 py-2 border rounded-lg"
+                  className="w-full px-4 py-2 dark:text-white border rounded-lg"
                   value={ed.programme}
                   onChange={(e) =>
                     handleEducationChange(idx, "programme", e.target.value)
@@ -172,7 +172,7 @@ const UploadDocumentsStep: React.FC = () => {
               <div>
                 <Label>Class</Label>
                 <select
-                  className="w-full px-4 py-2 border rounded-lg"
+                  className="w-full px-4 py-2 dark:text-gray-500 border rounded-lg"
                   value={ed.class}
                   onChange={(e) =>
                     handleEducationChange(idx, "class", e.target.value)
@@ -209,13 +209,13 @@ const UploadDocumentsStep: React.FC = () => {
           )}
         </ComponentCard>
         <ComponentCard title="Upload Required Documents">
-          <p className="mb-4 text-gray-600">
+          <p className="mb-4 text-gray-600 dark:text-white">
             Please upload the required documents based on your selected level.
           </p>
 
           {/* Level Selection */}
           <div className="mb-6">
-            <label className="block mb-2 font-semibold text-gray-700">
+            <label className="block mb-2 font-semibold text-gray-700 dark:text-gray-400">
               Selected Level:{" "}
               {level === "UG"
                 ? "Undergraduate"
@@ -224,7 +224,7 @@ const UploadDocumentsStep: React.FC = () => {
                 : "PhD"}
             </label>
             <select
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="w-full px-4 py-2 border dark:text-gray-500 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
               value={level}
               onChange={(e) => setLevel(e.target.value)}
             >

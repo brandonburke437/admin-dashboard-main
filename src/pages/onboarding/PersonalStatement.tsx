@@ -31,7 +31,7 @@ const PersonalStatement = () => {
         <ComponentCard title="Personal Statement">
           <Label>Why should you be awarded the scholarship?</Label>
           <textarea
-            className="w-full px-4 py-2 border rounded-lg"
+            className="w-full dark:text-white px-4 py-2 border  rounded-lg"
             rows={6}
             value={personalStatement}
             onChange={(e) => setPersonalStatement(e.target.value)}

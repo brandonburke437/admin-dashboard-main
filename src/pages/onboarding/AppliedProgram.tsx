@@ -66,7 +66,7 @@ const AppliedProgram = () => {
               <Label>Applied Program</Label>
               <input
                 type="text"
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full dark:text-white px-4 py-2 border rounded-lg"
                 value={appliedProgram}
                 onChange={(e) => setAppliedProgram(e.target.value)}
                 placeholder="Enter Applied Program"
@@ -80,7 +80,7 @@ const AppliedProgram = () => {
             <div>
               <Label>Level</Label>
               <select
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full dark:text-gray-400 px-4 py-2 border rounded-lg"
                 value={appliedLevel}
                 onChange={(e) => setAppliedLevel(e.target.value)}
               >
@@ -101,7 +101,7 @@ const AppliedProgram = () => {
               <Label>Applied Institution</Label>
               <input
                 type="text"
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 dark:text-white border rounded-lg"
                 value={appliedInstitution}
                 onChange={(e) => setAppliedInstitution(e.target.value)}
                 placeholder="Enter Institution"
@@ -115,7 +115,7 @@ const AppliedProgram = () => {
             <div>
               <Label>STEM/Non-STEM</Label>
               <select
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 dark:text-gray-400 border rounded-lg"
                 value={stemType}
                 onChange={(e) => setStemType(e.target.value)}
               >
@@ -134,7 +134,7 @@ const AppliedProgram = () => {
               <Label>Duration</Label>
               <input
                 type="text"
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 border dark:text-white rounded-lg"
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
                 placeholder="Enter Duration"
@@ -148,7 +148,7 @@ const AppliedProgram = () => {
             <div>
               <Label>Country</Label>
               <select
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 border dark:text-gray-400 rounded-lg"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
               >
@@ -165,7 +165,7 @@ const AppliedProgram = () => {
               <Label>Tuition</Label>
               <input
                 type="text"
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 border dark:text-white rounded-lg"
                 value={tuition}
                 onChange={(e) => setTuition(e.target.value)}
                 placeholder="Enter Tuition"
@@ -177,7 +177,7 @@ const AppliedProgram = () => {
             <div>
               <Label>Offer Status</Label>
               <select
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 border dark:text-gray-400 rounded-lg"
                 value={offerStatus}
                 onChange={(e) => setOfferStatus(e.target.value)}
               >
@@ -195,7 +195,7 @@ const AppliedProgram = () => {
             <div>
               <Label>On Scholarship?</Label>
               <select
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 border dark:text-gray-400 rounded-lg"
                 value={onScholarship}
                 onChange={(e) => setOnScholarship(e.target.value)}
               >
@@ -215,7 +215,7 @@ const AppliedProgram = () => {
                   <Label>If yes, name the scholarship</Label>
                   <input
                     type="text"
-                    className="w-full px-4 py-2 border rounded-lg"
+                    className="w-full px-4 py-2 border dark:text-gray-400 rounded-lg"
                     value={scholarshipName}
                     onChange={(e) => setScholarshipName(e.target.value)}
                     placeholder="Enter Scholarship Name"
@@ -230,7 +230,7 @@ const AppliedProgram = () => {
                   <Label>Scholarship Value</Label>
                   <input
                     type="text"
-                    className="w-full px-4 py-2 border rounded-lg"
+                    className="w-full dark:text-white px-4 py-2 border  rounded-lg"
                     value={scholarshipValue}
                     onChange={(e) => setScholarshipValue(e.target.value)}
                     placeholder="Enter Scholarship Value"
@@ -245,7 +245,7 @@ const AppliedProgram = () => {
                   <Label>Scholarship Awarding Body</Label>
                   <input
                     type="text"
-                    className="w-full px-4 py-2 border rounded-lg"
+                    className="w-full px-4 py-2 dark:text-white border rounded-lg"
                     value={scholarshipBody}
                     onChange={(e) => setScholarshipBody(e.target.value)}
                     placeholder="Enter Awarding Body"
