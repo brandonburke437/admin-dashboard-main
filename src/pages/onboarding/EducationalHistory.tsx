@@ -2,28 +2,105 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OnboardingLayout from "./OnboardingLayout";
 import ComponentCard from "../../components/common/ComponentCard";
+import FileInput from "../../components/form/input/FileInput";
 import Label from "../../components/form/Label";
+import toast from "react-hot-toast";
 
 const levels = ["Diploma", "Undergraduate", "Postgraduate", "PhD"];
-const classes = [
+
+const classOptions = [
   "First Class",
   "Second Class Upper",
   "Second Class Lower",
   "Third Class",
 ];
 
-const EducationalHistoryStep: React.FC = () => {
+const UploadDocumentsStep: React.FC = () => {
+  const [level, setLevel] = useState("UG");
   const [education, setEducation] = useState([
     { institution: "", level: "", programme: "", class: "" },
   ]);
+  const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
+  const [docErrors, setDocErrors] = useState<string[]>([]);
+  const [documents, setDocuments] = useState<{ [key: string]: File | null }>(
+    {}
+  );
   const navigate = useNavigate();
 
+  // Required documents for each level
+  const requiredDocs: { [key: string]: string[] } = {
+    UG: [
+      "WAEC Certificate",
+      "Testimonial",
+      "Birth Certificate/Ghana Card",
+      "Passport Picture",
+    ],
+    PG: [
+      "First Degree Certificate",
+      "Curriculum Vitae (CV)",
+      "Letters of Recommendation (2)",
+      "National Service Certificate",
+      "Passport Picture",
+    ],
+    PHD: [
+      "Master's Degree Certificate",
+      "Curriculum Vitae (CV)",
+      "Research Proposal",
+      "Letters of Recommendation (3)",
+      "National Service Certificate",
+      "Passport Picture",
+    ],
+  };
+
+  // Validate educational history
+  const validateEducation = () => {
+    const newErrors: { [key: string]: string[] } = {};
+    education.forEach((ed, idx) => {
+      const edErrors: string[] = [];
+      if (!ed.institution.trim()) edErrors.push("Institution is required");
+      if (!ed.level.trim()) edErrors.push("Level is required");
+      if (!ed.programme.trim()) edErrors.push("Programme is required");
+      if (!ed.class.trim()) edErrors.push("Class is required");
+      if (edErrors.length > 0) newErrors[idx] = edErrors;
+    });
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Validate required documents
+  const validateDocuments = () => {
+    let docErrs: string[] = [];
+    let docKeys: string[] = [];
+    if (level === "UG") docKeys = requiredDocs.UG;
+    else if (level === "PG") docKeys = requiredDocs.PG;
+    else if (level === "PHD") docKeys = requiredDocs.PHD;
+    docErrs = docKeys.filter((doc) => !documents[doc]);
+    setDocErrors(docErrs);
+    return docErrs.length === 0;
+  };
+
   const handleProceed = () => {
+    const validEdu = validateEducation();
+    const validDocs = validateDocuments();
+    if (!validEdu || !validDocs) {
+      toast.error(
+        "Please fill all required educational history fields and upload all required documents."
+      );
+      return;
+    }
     navigate("/onboarding/applied-program");
   };
 
   const handleReturn = () => {
     navigate("/onboarding/emergency-contact");
+  };
+
+  const handleFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    title: string
+  ) => {
+    const file = event.target.files?.[0] || null;
+    setDocuments((prev) => ({ ...prev, [title]: file }));
   };
 
   // Educational history handlers
@@ -102,11 +179,23 @@ const EducationalHistoryStep: React.FC = () => {
                   }
                 >
                   <option value="">Select Class</option>
-                  {classes.map((c) => (
-                    <option key={c}>{c}</option>
+                  {classOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
                   ))}
                 </select>
               </div>
+              {/* Show validation errors for this education entry */}
+              {errors[idx] && (
+                <div className="col-span-4">
+                  {errors[idx].map((err, i) => (
+                    <span key={i} className="text-error-500 text-xs block">
+                      {err}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
           {education.length < 3 && (
@@ -117,6 +206,163 @@ const EducationalHistoryStep: React.FC = () => {
             >
               Add Another Level
             </button>
+          )}
+        </ComponentCard>
+        <ComponentCard title="Upload Required Documents">
+          <p className="mb-4 text-gray-600">
+            Please upload the required documents based on your selected level.
+          </p>
+
+          {/* Level Selection */}
+          <div className="mb-6">
+            <label className="block mb-2 font-semibold text-gray-700">
+              Selected Level:{" "}
+              {level === "UG"
+                ? "Undergraduate"
+                : level === "PG"
+                ? "Postgraduate"
+                : "PhD"}
+            </label>
+            <select
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+              value={level}
+              onChange={(e) => setLevel(e.target.value)}
+            >
+              <option value="UG">Undergraduate</option>
+              <option value="PG">Postgraduate</option>
+              <option value="PHD">PhD</option>
+            </select>
+          </div>
+
+          {/* Conditional File Uploads */}
+          {level === "UG" && (
+            <div className="space-y-6">
+              <div>
+                <Label>WAEC Certificate</Label>
+                <FileInput
+                  onChange={(e) => handleFileChange(e, "WAEC Certificate")}
+                />
+              </div>
+              <div>
+                <Label>Testimonial</Label>
+                <FileInput
+                  onChange={(e) => handleFileChange(e, "Testimonial")}
+                />
+              </div>
+              <div>
+                <Label>Birth Certificate/Ghana Card</Label>
+                <FileInput
+                  onChange={(e) =>
+                    handleFileChange(e, "Birth Certificate/Ghana Card")
+                  }
+                />
+              </div>
+              <div>
+                <Label>Passport Picture</Label>
+                <FileInput
+                  onChange={(e) => handleFileChange(e, "Passport Picture")}
+                />
+              </div>
+            </div>
+          )}
+
+          {level === "PG" && (
+            <div className="space-y-6">
+              <div>
+                <Label>First Degree Certificate</Label>
+                <FileInput
+                  onChange={(e) =>
+                    handleFileChange(e, "First Degree Certificate")
+                  }
+                />
+              </div>
+              <div>
+                <Label>Curriculum Vitae (CV)</Label>
+                <FileInput
+                  onChange={(e) => handleFileChange(e, "Curriculum Vitae (CV)")}
+                />
+              </div>
+              <div>
+                <Label>Letters of Recommendation (2)</Label>
+                <FileInput
+                  onChange={(e) =>
+                    handleFileChange(e, "Letters of Recommendation (2)")
+                  }
+                />
+              </div>
+              <div>
+                <Label>National Service Certificate</Label>
+                <FileInput
+                  onChange={(e) =>
+                    handleFileChange(e, "National Service Certificate")
+                  }
+                />
+              </div>
+              <div>
+                <Label>Passport Picture</Label>
+                <FileInput
+                  onChange={(e) => handleFileChange(e, "Passport Picture")}
+                />
+              </div>
+            </div>
+          )}
+
+          {level === "PHD" && (
+            <div className="space-y-6">
+              <div>
+                <Label>Master's Degree Certificate</Label>
+                <FileInput
+                  onChange={(e) =>
+                    handleFileChange(e, "Master's Degree Certificate")
+                  }
+                />
+              </div>
+              <div>
+                <Label>Curriculum Vitae (CV)</Label>
+                <FileInput
+                  onChange={(e) => handleFileChange(e, "Curriculum Vitae (CV)")}
+                />
+              </div>
+              <div>
+                <Label>Research Proposal</Label>
+                <FileInput
+                  onChange={(e) => handleFileChange(e, "Research Proposal")}
+                />
+              </div>
+              <div>
+                <Label>Letters of Recommendation (3)</Label>
+                <FileInput
+                  onChange={(e) =>
+                    handleFileChange(e, "Letters of Recommendation (3)")
+                  }
+                />
+              </div>
+              <div>
+                <Label>National Service Certificate</Label>
+                <FileInput
+                  onChange={(e) =>
+                    handleFileChange(e, "National Service Certificate")
+                  }
+                />
+              </div>
+              <div>
+                <Label>Passport Picture</Label>
+                <FileInput
+                  onChange={(e) => handleFileChange(e, "Passport Picture")}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Document upload errors */}
+          {docErrors.length > 0 && (
+            <div className="mt-4">
+              {docErrors.map((docErr, i) => (
+                <span key={i} className="text-error-500 text-xs block">
+                  {docErr} is required
+                </span>
+              ))}
+            </div>
           )}
         </ComponentCard>
 
@@ -140,4 +386,4 @@ const EducationalHistoryStep: React.FC = () => {
   );
 };
 
-export default EducationalHistoryStep;
+export default UploadDocumentsStep;

@@ -4,6 +4,7 @@ import ComponentCard from "../../components/common/ComponentCard";
 import Label from "../../components/form/Label";
 // import Radio from "../../components/form/input/Radio";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const regions = [
   "Greater Accra",
@@ -43,10 +44,29 @@ const EmergencyContact = () => {
   const [emDistrict, setEmDistrict] = useState("");
   const [emOccupation, setEmOccupation] = useState("");
   const [emEmployer, setEmEmployer] = useState("");
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const emDistrictOptions = emRegion ? districtsByRegion[emRegion] || [] : [];
 
   const handleProceed = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!emName.trim()) newErrors.emName = "Name is required";
+    if (!emRelationship.trim())
+      newErrors.emRelationship = "Relationship is required";
+    if (!emPhone.trim()) newErrors.emPhone = "Phone is required";
+    if (!emEmail.trim()) newErrors.emEmail = "Email is required";
+    if (!emAddress.trim()) newErrors.emAddress = "Address is required";
+    if (!emRegion.trim()) newErrors.emRegion = "Region is required";
+    if (!emDistrict.trim()) newErrors.emDistrict = "District is required";
+    if (!emOccupation.trim()) newErrors.emOccupation = "Occupation is required";
+    if (!emEmployer.trim()) newErrors.emEmployer = "Employer is required";
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      toast.error("Please fill all required emergency contact fields.");
+      return;
+    }
+
     navigate("/onboarding/educational-history");
   };
 
@@ -68,6 +88,9 @@ const EmergencyContact = () => {
                 onChange={(e) => setEmName(e.target.value)}
                 placeholder="Enter Name"
               />
+              {errors.emName && (
+                <span className="text-error-500 text-xs">{errors.emName}</span>
+              )}
             </div>
             <div>
               <Label>Relationship</Label>
@@ -78,6 +101,11 @@ const EmergencyContact = () => {
                 onChange={(e) => setEmRelationship(e.target.value)}
                 placeholder="Enter Relationship"
               />
+              {errors.emRelationship && (
+                <span className="text-error-500 text-xs">
+                  {errors.emRelationship}
+                </span>
+              )}
             </div>
             <div>
               <Label>Phone</Label>
@@ -88,6 +116,9 @@ const EmergencyContact = () => {
                 onChange={(e) => setEmPhone(e.target.value)}
                 placeholder="Enter Phone Number"
               />
+              {errors.emPhone && (
+                <span className="text-error-500 text-xs">{errors.emPhone}</span>
+              )}
             </div>
             <div>
               <Label>Email</Label>
@@ -98,6 +129,9 @@ const EmergencyContact = () => {
                 onChange={(e) => setEmEmail(e.target.value)}
                 placeholder="Enter Email"
               />
+              {errors.emEmail && (
+                <span className="text-error-500 text-xs">{errors.emEmail}</span>
+              )}
             </div>
             <div>
               <Label>Resident Address Type</Label>
@@ -123,8 +157,12 @@ const EmergencyContact = () => {
                     : "Enter Post Office Box"
                 }
               />
+              {errors.emAddress && (
+                <span className="text-error-500 text-xs">
+                  {errors.emAddress}
+                </span>
+              )}
             </div>
-
             <div>
               <Label>Region</Label>
               <select
@@ -137,6 +175,11 @@ const EmergencyContact = () => {
                   <option key={r}>{r}</option>
                 ))}
               </select>
+              {errors.emRegion && (
+                <span className="text-error-500 text-xs">
+                  {errors.emRegion}
+                </span>
+              )}
             </div>
             <div>
               <Label>District</Label>
@@ -150,6 +193,11 @@ const EmergencyContact = () => {
                   <option key={d}>{d}</option>
                 ))}
               </select>
+              {errors.emDistrict && (
+                <span className="text-error-500 text-xs">
+                  {errors.emDistrict}
+                </span>
+              )}
             </div>
             <div>
               <Label>Occupation</Label>
@@ -160,6 +208,11 @@ const EmergencyContact = () => {
                 onChange={(e) => setEmOccupation(e.target.value)}
                 placeholder="Enter Occupation"
               />
+              {errors.emOccupation && (
+                <span className="text-error-500 text-xs">
+                  {errors.emOccupation}
+                </span>
+              )}
             </div>
             <div>
               <Label>Employer Name</Label>
@@ -170,6 +223,11 @@ const EmergencyContact = () => {
                 onChange={(e) => setEmEmployer(e.target.value)}
                 placeholder="Enter Employer Name"
               />
+              {errors.emEmployer && (
+                <span className="text-error-500 text-xs">
+                  {errors.emEmployer}
+                </span>
+              )}
             </div>
           </div>
         </ComponentCard>

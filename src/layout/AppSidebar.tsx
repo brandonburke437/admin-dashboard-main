@@ -53,8 +53,8 @@ const navItems: NavItem[] = [
     name: "Applications",
     icon: <ListIcon />,
     subItems: [
-      { name: "Basic Tables", path: "/basic-tables", pro: false },
-      { name: "Data Tables", path: "/data-tables", pro: false },
+      { name: "Applications", path: "/basic-tables", pro: false },
+      { name: "My Applications", path: "/data-tables", pro: false },
     ],
   },
   {

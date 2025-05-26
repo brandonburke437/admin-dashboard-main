@@ -6,6 +6,7 @@ import Radio from "../../components/form/input/Radio";
 import OnboardingLayout from "./OnboardingLayout";
 import Flatpickr from "react-flatpickr";
 import { CalenderIcon } from "../../icons";
+import toast from "react-hot-toast";
 
 const regions = [
   "Greater Accra",
@@ -49,14 +50,40 @@ const EligibilityStep = () => {
     useState("Post Office Box");
   const [residentAddress, setResidentAddress] = useState("");
   const [residentGPS, setResidentGPS] = useState("");
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const handleDateChange = (date: Date[]) => {
-    setDateOfBirth(date[0].toLocaleDateString()); // Handle selected date and format it
+    setDateOfBirth(date[0]?.toLocaleDateString() || "");
   };
 
   const districtOptions = region ? districtsByRegion[region] || [] : [];
 
   const handleProceed = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!firstName.trim()) newErrors.firstName = "First name is required";
+    if (!lastName.trim()) newErrors.lastName = "Last name is required";
+    if (!dateOfBirth.trim())
+      newErrors.dateOfBirth = "Date of birth is required";
+    if (!phone.trim()) newErrors.phone = "Phone is required";
+    if (!email.trim()) newErrors.email = "Email is required";
+    if (!birthPlace.trim()) newErrors.birthPlace = "Birth place is required";
+    if (!physicallyChallenged.trim())
+      newErrors.physicallyChallenged = "Select an option";
+    if (!gender.trim()) newErrors.gender = "Gender is required";
+    if (!region.trim()) newErrors.region = "Region is required";
+    if (!district.trim()) newErrors.district = "District is required";
+    if (!residentAddress.trim())
+      newErrors.residentAddress = "Resident address is required";
+    if (residentAddressType === "GPS" && !residentGPS.trim())
+      newErrors.residentGPS = "GPS is required";
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      toast.error("Please fill all required eligibility fields.");
+      return;
+    }
+
     // Save data logic here
     navigate("/onboarding/emergency-contact");
   };
@@ -75,6 +102,11 @@ const EligibilityStep = () => {
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Enter First Name"
               />
+              {errors.firstName && (
+                <span className="text-error-500 text-xs">
+                  {errors.firstName}
+                </span>
+              )}
             </div>
             <div>
               <Label>Last Name</Label>
@@ -85,15 +117,20 @@ const EligibilityStep = () => {
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Enter Last Name"
               />
+              {errors.lastName && (
+                <span className="text-error-500 text-xs">
+                  {errors.lastName}
+                </span>
+              )}
             </div>
             <div>
               <Label htmlFor="datePicker">Date of Birth</Label>
               <div className="relative w-full flatpickr-wrapper">
                 <Flatpickr
-                  value={dateOfBirth} // Set the value to the state
-                  onChange={handleDateChange} // Handle the date change
+                  value={dateOfBirth}
+                  onChange={handleDateChange}
                   options={{
-                    dateFormat: "Y-m-d", // Set the date format
+                    dateFormat: "Y-m-d",
                   }}
                   placeholder="Select an option"
                   className="h-11 w-full rounded-lg border appearance-none px-4 py-2.5 text-sm shadow-theme-xs placeholder:text-gray-400 focus:outline-hidden focus:ring-3  dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30  bg-transparent text-gray-800 border-gray-300 focus:border-amber-300 focus:ring-amber-500/20 dark:border-gray-700  dark:focus:border-amber-800"
@@ -102,6 +139,11 @@ const EligibilityStep = () => {
                   <CalenderIcon className="size-6" />
                 </span>
               </div>
+              {errors.dateOfBirth && (
+                <span className="text-error-500 text-xs">
+                  {errors.dateOfBirth}
+                </span>
+              )}
             </div>
             <div>
               <Label>Phone</Label>
@@ -112,6 +154,9 @@ const EligibilityStep = () => {
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="Enter Phone Number"
               />
+              {errors.phone && (
+                <span className="text-error-500 text-xs">{errors.phone}</span>
+              )}
             </div>
             <div>
               <Label>Email</Label>
@@ -122,6 +167,9 @@ const EligibilityStep = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter Email"
               />
+              {errors.email && (
+                <span className="text-error-500 text-xs">{errors.email}</span>
+              )}
             </div>
             <div>
               <Label>Birth Place</Label>
@@ -132,6 +180,11 @@ const EligibilityStep = () => {
                 onChange={(e) => setBirthPlace(e.target.value)}
                 placeholder="Enter Birth Place"
               />
+              {errors.birthPlace && (
+                <span className="text-error-500 text-xs">
+                  {errors.birthPlace}
+                </span>
+              )}
             </div>
             <div>
               <Label>Physically Challenged</Label>
@@ -153,6 +206,11 @@ const EligibilityStep = () => {
                   label="No"
                 />
               </div>
+              {errors.physicallyChallenged && (
+                <span className="text-error-500 text-xs">
+                  {errors.physicallyChallenged}
+                </span>
+              )}
             </div>
             <div>
               <Label>Gender</Label>
@@ -165,6 +223,9 @@ const EligibilityStep = () => {
                 <option>Male</option>
                 <option>Female</option>
               </select>
+              {errors.gender && (
+                <span className="text-error-500 text-xs">{errors.gender}</span>
+              )}
             </div>
             <div>
               <Label>Region</Label>
@@ -178,6 +239,9 @@ const EligibilityStep = () => {
                   <option key={r}>{r}</option>
                 ))}
               </select>
+              {errors.region && (
+                <span className="text-error-500 text-xs">{errors.region}</span>
+              )}
             </div>
             <div>
               <Label>District</Label>
@@ -191,6 +255,11 @@ const EligibilityStep = () => {
                   <option key={d}>{d}</option>
                 ))}
               </select>
+              {errors.district && (
+                <span className="text-error-500 text-xs">
+                  {errors.district}
+                </span>
+              )}
             </div>
             <div>
               <Label>Resident Address Type</Label>
@@ -216,6 +285,11 @@ const EligibilityStep = () => {
                     : "Enter Post Office Box"
                 }
               />
+              {errors.residentAddress && (
+                <span className="text-error-500 text-xs">
+                  {errors.residentAddress}
+                </span>
+              )}
             </div>
             {residentAddressType === "GPS" && (
               <div>
@@ -227,6 +301,11 @@ const EligibilityStep = () => {
                   onChange={(e) => setResidentGPS(e.target.value)}
                   placeholder="Enter GPS"
                 />
+                {errors.residentGPS && (
+                  <span className="text-error-500 text-xs">
+                    {errors.residentGPS}
+                  </span>
+                )}
               </div>
             )}
           </div>

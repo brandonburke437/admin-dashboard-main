@@ -3,12 +3,20 @@ import OnboardingLayout from "./OnboardingLayout";
 import ComponentCard from "../../components/common/ComponentCard";
 import Label from "../../components/form/Label";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const PersonalStatement = () => {
   const [personalStatement, setPersonalStatement] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleProceed = () => {
+    if (!personalStatement.trim()) {
+      setError("Personal statement is required.");
+      toast.error("Please provide your personal statement.");
+      return;
+    }
+    setError("");
     // Save or validate the statement if needed
     navigate("/onboarding/final");
   };
@@ -29,6 +37,9 @@ const PersonalStatement = () => {
             onChange={(e) => setPersonalStatement(e.target.value)}
             placeholder="Write your answer here..."
           />
+          {error && (
+            <span className="text-error-500 text-xs mt-2 block">{error}</span>
+          )}
         </ComponentCard>
         <div className="flex justify-between">
           <button

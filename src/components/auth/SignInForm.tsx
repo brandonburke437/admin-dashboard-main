@@ -5,7 +5,7 @@ import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +30,7 @@ export default function SignInForm() {
     if (validate()) {
       toast.success("Signed in successfully!");
       setTimeout(() => {
-        navigate("/"); // Redirect to dashboard or home
+        navigate("/");
       }, 1500);
     }
   };
@@ -58,7 +58,7 @@ export default function SignInForm() {
           </div>
           <div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
-              {/* <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
+              <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
                 <svg
                   width="20"
                   height="20"
@@ -84,8 +84,8 @@ export default function SignInForm() {
                   />
                 </svg>
                 Sign in with Google
-              </button> */}
-              {/* <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
+              </button>
+              <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
                 <svg
                   width="21"
                   className="fill-current"
@@ -94,12 +94,15 @@ export default function SignInForm() {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path d="M15.6705 1.875H18.4272L12.4047 8.75833L19.4897 18.125H13.9422L9.59717 12.4442L4.62554 18.125H1.86721L8.30887 10.7625L1.51221 1.875H7.20054L11.128 7.0675L15.6705 1.875ZM14.703 16.475H16.2305L6.37054 3.43833H4.73137L14.703 16.475Z" />
+                  <path
+                    d="M16.715 10.857c-.02-2.13 1.74-3.146 1.82-3.194-1-1.46-2.56-1.66-3.11-1.68-1.32-.13-2.58.77-3.25.77-.67 0-1.7-.75-2.8-.73-1.44.02-2.77.84-3.51 2.13-1.5 2.6-.38 6.45 1.07 8.56.71 1.03 1.56 2.18 2.68 2.14 1.08-.04 1.49-.69 2.8-.69 1.31 0 1.67.69 2.81.67 1.16-.02 1.89-1.05 2.59-2.08.82-1.19 1.16-2.34 1.18-2.4-.03-.01-2.26-.87-2.28-3.45zm-2.14-6.31c.6-.73 1-1.75.89-2.77-.86.03-1.89.57-2.5 1.3-.55.64-1.04 1.67-.86 2.65.91.07 1.86-.46 2.47-1.18z"
+                    fill="currentColor"
+                  />
                 </svg>
-                Sign in with X
-              </button> */}
+                Continue with Apple
+              </button>
             </div>
-            {/* <div className="relative py-3 sm:py-5">
+            <div className="relative py-3 sm:py-5">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-200 dark:border-gray-800"></div>
               </div>
@@ -108,7 +111,7 @@ export default function SignInForm() {
                   Or
                 </span>
               </div>
-            </div> */}
+            </div>
             <form onSubmit={handleSubmit}>
               <div className="space-y-6">
                 <div>
@@ -189,7 +192,6 @@ export default function SignInForm() {
           </div>
         </div>
       </div>
-      <Toaster />
     </div>
   );
 }

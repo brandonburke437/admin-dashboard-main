@@ -21,12 +21,14 @@ import Home from "./pages/Dashboard/Home";
 import OnboardingRoutes from "./pages/onboarding/onboardingRoutes";
 import { OnboardingProvider } from "./context/OnboardingContext";
 import DataTables from "./pages/Tables/DataTables";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
   return (
     <OnboardingProvider>
       <Router>
         <ScrollToTop />
+
         <Routes>
           {/* Dashboard Layout */}
           <Route element={<AppLayout />}>
@@ -67,6 +69,14 @@ export default function App() {
           {/* <OnboardingRoutes /> */}
         </Routes>
       </Router>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          style: {
+            zIndex: 9999,
+          },
+        }}
+      />
     </OnboardingProvider>
   );
 }

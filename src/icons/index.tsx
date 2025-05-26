@@ -4,7 +4,7 @@ import { ReactComponent as CheckCircleIcon } from "./check-circle.svg?react";
 import { ReactComponent as AlertIcon } from "./alert.svg?react";
 import { ReactComponent as InfoIcon } from "./info.svg?react";
 import { ReactComponent as ErrorIcon } from "./info-error.svg?react";
-import { ReactComponent as BoltIcon } from "./bolt.svg?react";
+import { ReactComponent as BoltIcon } from "../s";
 import { ReactComponent as ArrowUpIcon } from "./arrow-up.svg?react";
 import { ReactComponent as ArrowDownIcon } from "./arrow-down.svg?react";
 import { ReactComponent as FolderIcon } from "./folder.svg?react";
@@ -13,10 +13,9 @@ import { ReactComponent as AudioIcon } from "./audio.svg?react";
 import { ReactComponent as GridIcon } from "./grid.svg?react";
 import { ReactComponent as FileIcon } from "./file.svg?react";
 import { ReactComponent as DownloadIcon } from "./download.svg?react";
-import { ReactComponent as ArrowRightIcon } from "./arrow-right.svg?react";
+import { ReactComponent as ArrowRightIcon } from "../icons/arrow?react";
 import { ReactComponent as GroupIcon } from "./group.svg?react";
 import { ReactComponent as BoxIconLine } from "./box-line.svg?react";
-import { ReactComponent as ShootingStarIcon } from "./shooting-star.svg?react";
 import { ReactComponent as DollarLineIcon } from "./dollar-line.svg?react";
 import { ReactComponent as TrashBinIcon } from "./trash.svg?react";
 import { ReactComponent as AngleUpIcon } from "./angle-up.svg?react";
@@ -74,9 +73,7 @@ export {
   ArrowRightIcon,
   GroupIcon,
   BoxIconLine,
-  ShootingStarIcon,
   DollarLineIcon,
-  TrashBinIcon,
   AngleUpIcon,
   AngleDownIcon,
   PencilIcon,

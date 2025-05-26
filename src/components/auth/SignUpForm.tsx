@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router"; // <-- Import useNavigate
+import { Link, useNavigate } from "react-router";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import PhoneInput from "../form/group-input/PhoneInput";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,7 +17,7 @@ export default function SignUpForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const navigate = useNavigate(); // <-- Initialize navigate
+  const navigate = useNavigate();
 
   // Only allow digits in phone input
   const handlePhoneChange = (value: string) => {
@@ -104,7 +104,7 @@ export default function SignUpForm() {
                     fill="#EB4335"
                   />
                 </svg>
-                Sign up with Google
+                Continue with Google
               </button>
               <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
                 <svg
@@ -294,7 +294,7 @@ export default function SignUpForm() {
                 {errors.terms && (
                   <span className="text-error-500 text-xs">{errors.terms}</span>
                 )}
-                {/* <!-- Sign Up Button --> */}
+                {/* <!-- Button --> */}
                 <div>
                   <button
                     type="submit"
@@ -305,6 +305,7 @@ export default function SignUpForm() {
                 </div>
               </div>
             </form>
+            {/* Success message is handled by toast, so this block is removed */}
 
             <div className="mt-5">
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
@@ -320,7 +321,6 @@ export default function SignUpForm() {
           </div>
         </div>
       </div>
-      <Toaster />
     </div>
   );
 }

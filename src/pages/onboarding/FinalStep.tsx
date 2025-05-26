@@ -3,16 +3,27 @@ import ComponentCard from "../../components/common/ComponentCard";
 import Label from "../../components/form/Label";
 import OnboardingLayout from "./OnboardingLayout";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const FinalStep: React.FC = () => {
   const [declarationName, setDeclarationName] = useState("");
   const [isConfirmed, setIsConfirmed] = useState(false);
+  const [errors, setErrors] = useState<{ name?: string; confirm?: string }>({});
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    if (isConfirmed && declarationName.trim()) {
-      alert("Application submitted successfully!");
-      // You can add your submission logic here
+  const handleSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const newErrors: { name?: string; confirm?: string } = {};
+    if (!declarationName.trim())
+      newErrors.name = "Please enter your legal name.";
+    if (!isConfirmed) newErrors.confirm = "You must confirm the declaration.";
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      toast.success("Your application has been submitted successfully!");
+      setTimeout(() => {
+        navigate("/");
+      }, 2500); // 2.5 seconds
     }
   };
 
@@ -47,47 +58,60 @@ const FinalStep: React.FC = () => {
               award rules and regulations.
             </p>
           </div>
-          <Label>Type your legal name</Label>
-          <input
-            type="text"
-            className="w-full px-4 py-2 border rounded-lg mb-4"
-            value={declarationName}
-            onChange={(e) => setDeclarationName(e.target.value)}
-            placeholder="Enter your legal name"
-          />
-          <div className="flex items-center space-x-3 mb-4">
+          <form onSubmit={handleSubmit}>
+            <Label>Type your legal name</Label>
             <input
-              type="checkbox"
-              id="confirm"
-              className="w-5 h-5"
-              checked={isConfirmed}
-              onChange={(e) => setIsConfirmed(e.target.checked)}
+              type="text"
+              className="w-full px-4 py-2 border rounded-lg mb-1"
+              value={declarationName}
+              onChange={(e) => setDeclarationName(e.target.value)}
+              placeholder="Enter your legal name"
             />
-            <label htmlFor="confirm" className="text-gray-700">
-              I confirm that the information provided is accurate and I agree to
-              the declaration above.
-            </label>
-          </div>
+            {errors.name && (
+              <span className="text-error-500 text-xs mb-2 block">
+                {errors.name}
+              </span>
+            )}
+            <div className="flex items-center space-x-3 mb-4">
+              <input
+                type="checkbox"
+                id="confirm"
+                className="w-5 h-5"
+                checked={isConfirmed}
+                onChange={(e) => setIsConfirmed(e.target.checked)}
+              />
+              <label htmlFor="confirm" className="text-gray-700">
+                I confirm that the information provided is accurate and I agree
+                to the declaration above.
+              </label>
+            </div>
+            {errors.confirm && (
+              <span className="text-error-500 text-xs mb-2 block">
+                {errors.confirm}
+              </span>
+            )}
+            <div className="flex justify-between">
+              <button
+                type="button"
+                onClick={handleReturn}
+                className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-lg transition duration-300"
+              >
+                Return
+              </button>
+              <button
+                type="submit"
+                disabled={!isConfirmed || !declarationName.trim()}
+                className={`bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 ${
+                  !isConfirmed || !declarationName.trim()
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
+              >
+                Submit
+              </button>
+            </div>
+          </form>
         </ComponentCard>
-        <div className="flex justify-between">
-          <button
-            onClick={handleReturn}
-            className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-lg transition duration-300"
-          >
-            Return
-          </button>
-          <button
-            onClick={handleSubmit}
-            disabled={!isConfirmed || !declarationName.trim()}
-            className={`bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 ${
-              !isConfirmed || !declarationName.trim()
-                ? "opacity-50 cursor-not-allowed"
-                : ""
-            }`}
-          >
-            Submit
-          </button>
-        </div>
       </div>
     </OnboardingLayout>
   );

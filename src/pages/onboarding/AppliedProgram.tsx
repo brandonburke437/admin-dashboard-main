@@ -3,10 +3,12 @@ import OnboardingLayout from "./OnboardingLayout";
 import ComponentCard from "../../components/common/ComponentCard";
 import Label from "../../components/form/Label";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const stemOptions = ["STEM", "Non-STEM"];
 const offerStatusOptions = ["Conditional", "Unconditional"];
 const countries = ["Ghana", "Nigeria", "South Africa", "Other"];
+const levelOptions = ["Undergraduate", "Postgraduate", "PhD"];
 
 const AppliedProgram = () => {
   const navigate = useNavigate();
@@ -23,8 +25,31 @@ const AppliedProgram = () => {
   const [scholarshipName, setScholarshipName] = useState("");
   const [scholarshipValue, setScholarshipValue] = useState("");
   const [scholarshipBody, setScholarshipBody] = useState("");
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const handleProceed = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!appliedProgram.trim()) newErrors.appliedProgram = "Required";
+    if (!appliedLevel.trim()) newErrors.appliedLevel = "Required";
+    if (!appliedInstitution.trim()) newErrors.appliedInstitution = "Required";
+    if (!stemType.trim()) newErrors.stemType = "Required";
+    if (!duration.trim()) newErrors.duration = "Required";
+    if (!country.trim()) newErrors.country = "Required";
+    if (!tuition.trim()) newErrors.tuition = "Required";
+    if (!offerStatus.trim()) newErrors.offerStatus = "Required";
+    if (!onScholarship.trim()) newErrors.onScholarship = "Required";
+    if (onScholarship === "Yes") {
+      if (!scholarshipName.trim()) newErrors.scholarshipName = "Required";
+      if (!scholarshipValue.trim()) newErrors.scholarshipValue = "Required";
+      if (!scholarshipBody.trim()) newErrors.scholarshipBody = "Required";
+    }
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      toast.error("Please fill all required fields.");
+      return;
+    }
+
     navigate("/onboarding/personal-statement");
   };
 
@@ -46,16 +71,31 @@ const AppliedProgram = () => {
                 onChange={(e) => setAppliedProgram(e.target.value)}
                 placeholder="Enter Applied Program"
               />
+              {errors.appliedProgram && (
+                <span className="text-error-500 text-xs">
+                  {errors.appliedProgram}
+                </span>
+              )}
             </div>
             <div>
               <Label>Level</Label>
-              <input
-                type="text"
+              <select
                 className="w-full px-4 py-2 border rounded-lg"
                 value={appliedLevel}
                 onChange={(e) => setAppliedLevel(e.target.value)}
-                placeholder="Enter Level"
-              />
+              >
+                <option value="">Select Level</option>
+                {levelOptions.map((level) => (
+                  <option key={level} value={level}>
+                    {level}
+                  </option>
+                ))}
+              </select>
+              {errors.appliedLevel && (
+                <span className="text-error-500 text-xs">
+                  {errors.appliedLevel}
+                </span>
+              )}
             </div>
             <div>
               <Label>Applied Institution</Label>
@@ -66,6 +106,11 @@ const AppliedProgram = () => {
                 onChange={(e) => setAppliedInstitution(e.target.value)}
                 placeholder="Enter Institution"
               />
+              {errors.appliedInstitution && (
+                <span className="text-error-500 text-xs">
+                  {errors.appliedInstitution}
+                </span>
+              )}
             </div>
             <div>
               <Label>STEM/Non-STEM</Label>
@@ -79,6 +124,11 @@ const AppliedProgram = () => {
                   <option key={s}>{s}</option>
                 ))}
               </select>
+              {errors.stemType && (
+                <span className="text-error-500 text-xs">
+                  {errors.stemType}
+                </span>
+              )}
             </div>
             <div>
               <Label>Duration</Label>
@@ -89,6 +139,11 @@ const AppliedProgram = () => {
                 onChange={(e) => setDuration(e.target.value)}
                 placeholder="Enter Duration"
               />
+              {errors.duration && (
+                <span className="text-error-500 text-xs">
+                  {errors.duration}
+                </span>
+              )}
             </div>
             <div>
               <Label>Country</Label>
@@ -102,6 +157,9 @@ const AppliedProgram = () => {
                   <option key={c}>{c}</option>
                 ))}
               </select>
+              {errors.country && (
+                <span className="text-error-500 text-xs">{errors.country}</span>
+              )}
             </div>
             <div>
               <Label>Tuition</Label>
@@ -112,6 +170,9 @@ const AppliedProgram = () => {
                 onChange={(e) => setTuition(e.target.value)}
                 placeholder="Enter Tuition"
               />
+              {errors.tuition && (
+                <span className="text-error-500 text-xs">{errors.tuition}</span>
+              )}
             </div>
             <div>
               <Label>Offer Status</Label>
@@ -125,6 +186,11 @@ const AppliedProgram = () => {
                   <option key={o}>{o}</option>
                 ))}
               </select>
+              {errors.offerStatus && (
+                <span className="text-error-500 text-xs">
+                  {errors.offerStatus}
+                </span>
+              )}
             </div>
             <div>
               <Label>On Scholarship?</Label>
@@ -137,6 +203,11 @@ const AppliedProgram = () => {
                 <option>Yes</option>
                 <option>No</option>
               </select>
+              {errors.onScholarship && (
+                <span className="text-error-500 text-xs">
+                  {errors.onScholarship}
+                </span>
+              )}
             </div>
             {onScholarship === "Yes" && (
               <>
@@ -149,6 +220,11 @@ const AppliedProgram = () => {
                     onChange={(e) => setScholarshipName(e.target.value)}
                     placeholder="Enter Scholarship Name"
                   />
+                  {errors.scholarshipName && (
+                    <span className="text-error-500 text-xs">
+                      {errors.scholarshipName}
+                    </span>
+                  )}
                 </div>
                 <div>
                   <Label>Scholarship Value</Label>
@@ -159,6 +235,11 @@ const AppliedProgram = () => {
                     onChange={(e) => setScholarshipValue(e.target.value)}
                     placeholder="Enter Scholarship Value"
                   />
+                  {errors.scholarshipValue && (
+                    <span className="text-error-500 text-xs">
+                      {errors.scholarshipValue}
+                    </span>
+                  )}
                 </div>
                 <div>
                   <Label>Scholarship Awarding Body</Label>
@@ -169,6 +250,11 @@ const AppliedProgram = () => {
                     onChange={(e) => setScholarshipBody(e.target.value)}
                     placeholder="Enter Awarding Body"
                   />
+                  {errors.scholarshipBody && (
+                    <span className="text-error-500 text-xs">
+                      {errors.scholarshipBody}
+                    </span>
+                  )}
                 </div>
               </>
             )}

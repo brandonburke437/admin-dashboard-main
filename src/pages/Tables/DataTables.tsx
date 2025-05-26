@@ -7,9 +7,9 @@ export default function DataTables() {
   return (
     <>
       <PageMeta title="Applications" description="" />
-      <PageBreadcrumb pageTitle="Your Applications" />
+      <PageBreadcrumb pageTitle="My Applications" />
       <div className="space-y-6">
-        <ComponentCard title="Your Applications">
+        <ComponentCard title="Applications">
           <DataTable />
         </ComponentCard>
       </div>
