@@ -7,9 +7,9 @@ export default function BasicTables() {
   return (
     <>
       <PageMeta title="Applications " description="ii" />
-      <PageBreadcrumb pageTitle="Basic Tables" />
+      <PageBreadcrumb pageTitle="Applications" />
       <div className="space-y-6">
-        <ComponentCard title="Basic Table 1">
+        <ComponentCard title="My applications">
           <BasicTableOne />
         </ComponentCard>
       </div>

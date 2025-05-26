@@ -14,7 +14,7 @@ const OnboardingLayout = ({
   const steps = Array.from({ length: totalSteps }, (_, i) => i + 1);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start py-12 px-4 bg-gray-50">
+    <div className="min-h-screen dark:bg-gray-900 flex flex-col items-center justify-start py-12 px-4 bg-gray-50">
       {/* Responsive Progress Tracker */}
       <div className="flex flex-wrap items-center justify-center mb-8 gap-2 sm:gap-4 w-full max-w-2xl">
         {steps.map((step) => (
