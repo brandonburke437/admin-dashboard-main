@@ -1,0 +1,144 @@
+{
+  "general": {
+    "baseUrl": "/api",
+    "authMethod": "JWT Bearer Token in Authorization header"
+  },
+
+  "auth": {
+    "POST /api/auth/signin": {
+      "description": "User sign in",
+      "request": { "emailOrUsernameOrPhone": "string", "password": "string" },
+      "response": {
+        "token": "string",
+        "user": {
+          "id": "string",
+          "fullName": "string",
+          "email": "string",
+          "role": "admin|applicant"
+        }
+      }
+    },
+    "POST /api/auth/signup": {
+      "description": "User registration",
+      "request": {
+        "fullName": "string",
+        "email": "string",
+        "password": "string",
+        "phone": "string"
+      },
+      "response": { "success": true, "userId": "string" }
+    },
+    "GET /api/auth/profile": {
+      "description": "Get logged-in user's profile",
+      "headers": { "Authorization": "Bearer <token>" },
+      "response": {
+        "id": "string",
+        "fullName": "string",
+        "email": "string",
+        "phone": "string",
+        "role": "admin|applicant"
+      }
+    }
+  },
+
+  "onboarding": {
+    "POST /api/onboarding/eligibility": {
+      "description": "Submit eligibility information",
+      "headers": { "Authorization": "Bearer <token>" },
+      "request": {
+        "firstName": "string",
+        "lastName": "string",
+        "dob": "YYYY-MM-DD",
+        "gender": "string",
+        "phone": "string",
+        "email": "string",
+        "isGhanaian": true,
+        "admissionType": "Undergraduate|Postgraduate|PhD",
+        "institution": "string",
+        "isNursingCollege": false,
+        "isSTEMLecturer": false,
+        "nationalId": "string"
+      },
+      "response": { "success": true }
+    },
+    "POST /api/onboarding/application-type": {
+      "description": "Submit program information",
+      "headers": { "Authorization": "Bearer <token>" },
+      "request": {
+        "applicationId": "string",
+        "programName": "string",
+        "level": "UG|PG|PhD",
+        "duration": "string",
+        "admissionLetterUrl": "string"
+      },
+      "response": { "success": true }
+    },
+    "POST /api/onboarding/personal-statement": {
+      "description": "Submit personal statement",
+      "headers": { "Authorization": "Bearer <token>" },
+      "request": { "applicationId": "string", "statement": "string" },
+      "response": { "success": true }
+    }
+  },
+
+  "applications": {
+    "POST /api/applications": {
+      "description": "Finalize and submit application",
+      "headers": { "Authorization": "Bearer <token>" },
+      "request": { "applicationId": "string" },
+      "response": { "success": true, "applicationId": "string" }
+    },
+    "GET /api/applications": {
+      "description": "Get all applications for the user",
+      "headers": { "Authorization": "Bearer <token>" },
+      "response": [
+        {
+          "id": "string",
+          "type": "Undergraduate|Postgraduate|PhD",
+          "program": "string",
+          "institution": "string",
+          "status": "Pending|Approved|Rejected",
+          "createdAt": "ISODate"
+        }
+      ]
+    },
+    "GET /api/applications/:id": {
+      "description": "Get single application details",
+      "headers": { "Authorization": "Bearer <token>" },
+      "response": {
+        "id": "string",
+        "type": "string",
+        "program": "string",
+        "institution": "string",
+        "status": "string",
+        "history": [{ "step": "string", "date": "ISODate" }],
+        "documents": [{ "type": "string", "url": "string" }]
+      }
+    }
+  },
+
+  "documents": {
+    "POST /api/documents/upload": {
+      "description": "Upload supporting documents",
+      "headers": {
+        "Authorization": "Bearer <token>",
+        "Content-Type": "multipart/form-data"
+      },
+      "request": {
+        "applicationId": "string",
+        "docType": "string",
+        "file": "binary (PDF|JPG|PNG)"
+      },
+      "response": { "success": true, "documentId": "string", "url": "string" }
+    }
+  },
+
+  "complaints": {
+    "POST /api/complaints": {
+      "description": "Submit a complaint or request change",
+      "headers": { "Authorization": "Bearer <token>" },
+      "request": { "applicationId": "string", "message": "string" },
+      "response": { "success": true, "complaintId": "string" }
+    }
+  }
+}

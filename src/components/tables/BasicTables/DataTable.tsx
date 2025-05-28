@@ -282,16 +282,31 @@ export default function DataTable() {
         <input
           type="text"
           placeholder="Search..."
-          className="border rounded px-3 py-2 w-full max-w-xs dark:bg-gray-800 dark:text-white"
+          className="border rounded px-3 py-2 w-full max-w-xs dark:bg-gray-800 dark:text-white dark:border-gray-700 "
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
         <button
-          className="px-3 py-2 rounded text-xs font-semibold bg-gray-200 text-gray-800 hover:bg-gray-300 border dark:bg-gray-700 dark:text-white"
+          className="flex items-center justify-center px-3 py-2 rounded text-xs font-semibold bg-gray-200 text-gray-800 hover:text-white hover:bg-amber-400 border dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700  dark:border-gray-700"
           onClick={() => setShowFilters(true)}
           aria-label="Show filters"
+          type="button"
         >
-          Filter
+          {/* Filter Icon from Flowbite */}
+          <svg
+            className="w-5 h-5"
+            aria-hidden="true"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M7.75 4H19M7.75 4a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 4h2.25m13.5 6H19m-2.25 0a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 10h11.25m-4.5 6H19M7.75 16a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 16h2.25"
+            />
+          </svg>
         </button>
         <button
           className={`px-3 py-2 rounded text-xs font-semibold ${
