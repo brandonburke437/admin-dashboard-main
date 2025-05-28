@@ -4,14 +4,14 @@ This document outlines the REST API endpoints for the GNPC Scholarship Portal. I
 
 ---
 
-## 📄 General Information
+## General Information
 
 - **Base URL**: `/api`
 - **Authentication**: JWT Bearer Token in `Authorization` header
 
 ---
 
-## 🔐 Authentication Endpoints
+## Authentication Endpoints
 
 ### `POST /api/auth/signin`
 
