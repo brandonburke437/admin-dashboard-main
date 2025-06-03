@@ -81,5 +81,63 @@ router.put("/:id/status", authMiddleware, adminMiddleware, async (req, res) => {
   }
 });
 
+// @route   GET /api/applications/search?name=Test%20User
+// @desc    Admin and user search applications by user name
+// @access  Private
+router.get("/search", authMiddleware, async (req, res) => {
+  const { name } = req.query;
+
+  if (!name) {
+    return res.status(400).json({ msg: "Please provide a name to search" });
+  }
+
+  try {
+    const allApplications = await ScholarshipApplication.find()
+      .populate({
+        path: "user",
+        select: "name email",
+        match: { name: new RegExp(name, "i") },
+      });
+
+    // Filter applications by user's own submissions if not admin
+    const filtered = allApplications.filter(app => {
+      if (!app.user) return false;
+      if (req.user.role === "admin") return true;
+      return app.user._id.toString() === req.user.id;
+    });
+
+    if (filtered.length === 0) {
+      return res.status(404).json({ msg: "No applications found for that name" });
+    }
+
+    res.json(filtered);
+  } catch (error) {
+    console.error("❌ Error in /search route:", error);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+
+// Get a specific application by ID (user or admin)
+router.get("/:id", authMiddleware, async (req, res) => {
+  try {
+    const application = await ScholarshipApplication.findById(req.params.id).populate("user", "-password");
+    if (!application) {
+      return res.status(404).json({ msg: "Application not found" });
+    }
+
+    // If not admin, only allow user to view their own application
+    if (req.user.role !== "admin" && application.user._id.toString() !== req.user.id) {
+      return res.status(403).json({ msg: "Unauthorized" });
+    }
+
+    res.json(application);
+  } catch (error) {
+    console.error("Error fetching application by ID:", error);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+
 
 module.exports = router;
