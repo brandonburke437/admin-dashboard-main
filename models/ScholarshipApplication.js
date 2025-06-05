@@ -19,6 +19,12 @@ const ScholarshipApplicationSchema = new mongoose.Schema({
   isPhysicallyChallenged: Boolean,
   residentialAddressType: String,
   residentialAddress: String,
+  nationality: {
+  type: String,
+  required: true,
+  enum: ["Ghanaian"],
+},
+
 
   // Stage 2 – Emergency Contact
   emergencyContactName: String,
