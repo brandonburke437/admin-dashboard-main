@@ -13,7 +13,7 @@ import { ReactComponent as AudioIcon } from "./audio.svg?react";
 import { ReactComponent as GridIcon } from "./grid.svg?react";
 import { ReactComponent as FileIcon } from "./file.svg?react";
 import { ReactComponent as DownloadIcon } from "./download.svg?react";
-import { ReactComponent as ArrowRightIcon } from "../icons/arrow?react";
+import { ReactComponent as ArrowRightIcon } from "./arrow?react";
 import { ReactComponent as GroupIcon } from "./group.svg?react";
 import { ReactComponent as BoxIconLine } from "./box-line.svg?react";
 import { ReactComponent as DollarLineIcon } from "./dollar-line.svg?react";

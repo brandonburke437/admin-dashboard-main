@@ -1,7 +1,7 @@
 import React from "react";
-import GridShape from "../../components/common/GridShape";
+// import GridShape from "../../admin/admin-component/common/GridShape";
 import { Link } from "react-router";
-import ThemeTogglerTwo from "../../components/common/ThemeTogglerTwo";
+import ThemeTogglerTwo from "../../admin/admin-component/common/ThemeTogglerTwo";
 
 export default function AuthLayout({
   children,
@@ -16,7 +16,7 @@ export default function AuthLayout({
           <div className="relative flex items-center justify-center z-1">
             {/* <GridShape /> */}
             <div className="flex flex-col items-center max-w-xs">
-              <Link to="/" className="block mb-4">
+              <Link to="/dashboard" className="block mb-4">
                 <img
                   width={231}
                   height={48}

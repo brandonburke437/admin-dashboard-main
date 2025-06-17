@@ -15,30 +15,35 @@ import Calendar from "./pages/Calendar";
 import BasicTables from "./pages/Tables/BasicTables";
 import FormElements from "./pages/Forms/FormElements";
 import Blank from "./pages/Blank";
-import AppLayout from "./layout/AppLayout";
-import { ScrollToTop } from "./components/common/ScrollToTop";
-import Home from "./pages/Dashboard/Home";
-import OnboardingRoutes from "./pages/onboarding/onboardingRoutes";
+import AppLayout from "./admin/layout/AppLayout";
+import { ScrollToTop } from "./admin/admin-component/common/ScrollToTop";
 import { OnboardingProvider } from "./context/OnboardingContext";
 import DataTables from "./pages/Tables/DataTables";
 import { Toaster } from "react-hot-toast";
+import UserTables from "./pages/Tables/UserTables";
+import AdminDashboard from "./admin/Dashboard/AdminDash";
+import UserDash from "./applicant/Dashboard/UserDash";
 
 export default function App() {
   return (
     <OnboardingProvider>
       <Router>
         <ScrollToTop />
-
         <Routes>
+          {/* Auth Layout: Make SignIn the default route */}
+          <Route index element={<SignIn />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+
           {/* Dashboard Layout */}
           <Route element={<AppLayout />}>
-            <Route index path="/" element={<Home />} />
+            <Route index path="/dashboard" element={<AdminDashboard />} />
+            <Route index path="/user-dashboard" element={<UserDash />} />
 
             {/* Others Page */}
             <Route path="/profile" element={<UserProfiles />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/blank" element={<Blank />} />
-            <Route path="/onboarding/*" element={<OnboardingRoutes />} />
 
             {/* Forms */}
             <Route path="/form-elements" element={<FormElements />} />
@@ -46,6 +51,7 @@ export default function App() {
             {/* Tables */}
             <Route path="/basic-tables" element={<BasicTables />} />
             <Route path="/data-tables" element={<DataTables />} />
+            <Route path="/user-tables" element={<UserTables />} />
 
             {/* Ui Elements */}
             <Route path="/alerts" element={<Alerts />} />
@@ -59,10 +65,6 @@ export default function App() {
             <Route path="/line-chart" element={<LineChart />} />
             <Route path="/bar-chart" element={<BarChart />} />
           </Route>
-
-          {/* Auth Layout */}
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
 
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />
