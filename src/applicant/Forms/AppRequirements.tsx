@@ -1,5 +1,5 @@
-import PageBreadcrumb from "../../admin/admin-component/common/PageBreadCrumb";
-import PageMeta from "../../admin/admin-component/common/PageMeta";
+import PageBreadcrumb from "../applicant-components/common/PageBreadCrumb";
+import PageMeta from "../applicant-components/common/PageMeta";
 
 export default function AppRequirements() {
   return (

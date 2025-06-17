@@ -16,6 +16,7 @@ import BasicTables from "./pages/Tables/BasicTables";
 import FormElements from "./pages/Forms/FormElements";
 import Blank from "./pages/Blank";
 import AppLayout from "./admin/layout/AppLayout";
+import ApplicantAppLayout from "./applicant/layout/AppLayout";
 import { ScrollToTop } from "./admin/admin-component/common/ScrollToTop";
 import { OnboardingProvider } from "./context/OnboardingContext";
 import DataTables from "./pages/Tables/DataTables";
@@ -23,6 +24,7 @@ import { Toaster } from "react-hot-toast";
 import UserTables from "./pages/Tables/UserTables";
 import AdminDashboard from "./admin/Dashboard/AdminDash";
 import UserDash from "./applicant/Dashboard/UserDash";
+import AppRequirements from "./applicant/Forms/AppRequirements";
 
 export default function App() {
   return (
@@ -35,10 +37,14 @@ export default function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
 
-          {/* Dashboard Layout */}
+          {/* Admin Dashboard Layout */}
           <Route element={<AppLayout />}>
             <Route index path="/dashboard" element={<AdminDashboard />} />
-            <Route index path="/user-dashboard" element={<UserDash />} />
+
+            {/* Applicant Dashboard */}
+            <Route element={<ApplicantAppLayout />}>
+              <Route index path="/user-dashboard" element={<UserDash />} />{" "}
+            </Route>
 
             {/* Others Page */}
             <Route path="/profile" element={<UserProfiles />} />
@@ -47,6 +53,7 @@ export default function App() {
 
             {/* Forms */}
             <Route path="/form-elements" element={<FormElements />} />
+            <Route path="/app-requirements" element={<AppRequirements />} />
 
             {/* Tables */}
             <Route path="/basic-tables" element={<BasicTables />} />
