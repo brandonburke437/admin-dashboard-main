@@ -67,11 +67,11 @@ const EmergencyContact = () => {
       return;
     }
 
-    navigate("/onboarding/educational-history");
+    navigate("/user-dashboard/onboarding/educational-history");
   };
 
   const handleReturn = (): void => {
-    navigate("/onboarding/eligibility");
+    navigate("/user-dashboard/onboarding/eligibility");
   };
 
   return (

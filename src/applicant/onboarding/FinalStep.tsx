@@ -22,13 +22,13 @@ const FinalStep: React.FC = () => {
     if (Object.keys(newErrors).length === 0) {
       toast.success("Your application has been submitted successfully!");
       setTimeout(() => {
-        navigate("/");
+        navigate("/user-dashboard");
       }, 2500); // 2.5 seconds
     }
   };
 
   const handleReturn = () => {
-    navigate("/onboarding/personal-statement");
+    navigate("/user-dashboard/onboarding/personal-statement");
   };
 
   return (

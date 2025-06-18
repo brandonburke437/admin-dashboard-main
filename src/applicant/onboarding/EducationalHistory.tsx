@@ -88,11 +88,11 @@ const UploadDocumentsStep: React.FC = () => {
       );
       return;
     }
-    navigate("/onboarding/applied-program");
+    navigate("/user-dashboard/onboarding/applied-program");
   };
 
   const handleReturn = () => {
-    navigate("/onboarding/emergency-contact");
+    navigate("/user-dashboard/onboarding/emergency-contact");
   };
 
   const handleFileChange = (

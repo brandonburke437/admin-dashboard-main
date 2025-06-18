@@ -50,11 +50,11 @@ const AppliedProgram = () => {
       return;
     }
 
-    navigate("/onboarding/personal-statement");
+    navigate("/user-dashboard/onboarding/personal-statement");
   };
 
   const handleReturn = () => {
-    navigate("/onboarding/educational-history");
+    navigate("/user-dashboard/onboarding/educational-history");
   };
 
   return (

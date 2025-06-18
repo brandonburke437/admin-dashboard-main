@@ -29,7 +29,7 @@ export default function EcommerceMetrics() {
               </h4>
             </div>
             <Link
-              to="/onboarding"
+              to="/user-dashboard/onboarding"
               className="mt-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 text-center hover:shadow-lg hover:bg-white hover:text-amber-500 hover:border-amber-500 border border-amber-500 dark:hover:bg-white/10 dark:hover:text-amber-500 dark:hover:border-amber-500"
             >
               Apply Now
@@ -62,7 +62,7 @@ export default function EcommerceMetrics() {
               </h4>
             </div>
             <Link
-              to="/data-tables"
+              to="/user-dashboard/data-tables"
               className="mt-4 bg-black hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 text-center"
             >
               View Applications
@@ -93,7 +93,7 @@ export default function EcommerceMetrics() {
               </h4>
             </div>
             <Link
-              to="/onboarding"
+              to="/user-dashboard/app-requirements"
               className="mt-4 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 text-center hover:shadow-lg hover:bg-white hover:text-amber-500 hover:border-amber-500 border border-amber-500 dark:hover:bg-white/10 dark:hover:text-amber-500 dark:hover:border-amber-500"
             >
               View Requirements

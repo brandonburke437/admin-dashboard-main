@@ -23,7 +23,7 @@ const WelcomeScreen = () => {
             application
           </p>
           <button
-            onClick={() => navigate("/onboarding/eligibility")}
+            onClick={() => navigate("/user-dashboard/onboarding/eligibility")}
             className="mt-6 rounded bg-amber-500 px-4 py-2 text-white hover:bg-amber-600"
           >
             Get Started

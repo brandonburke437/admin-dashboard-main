@@ -21,11 +21,6 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  // {
-  //   icon: <GridIcon />,
-  //   name: "Dashboard",
-  //   subItems: [{ name: "Ecommerce", path: "/", pro: false }],
-  // },
   {
     icon: <GridIcon />,
     name: "Dashboard",
@@ -34,31 +29,21 @@ const navItems: NavItem[] = [
   {
     icon: <CalenderIcon />,
     name: "Calendar",
-    path: "/calendar",
+    path: "/dashboard/calendar",
   },
-  // {
-  //   icon: <UserCircleIcon />,
-  //   name: "User Profile",
-  //   path: "/profile",
-  // },
-
   {
     name: "Applications",
     icon: <ListIcon />,
     subItems: [
-      { name: "My Applications", path: "/basic-tables", pro: false },
-      { name: "Applications", path: "/data-tables", pro: false },
-      {
-        name: "User Applications",
-        path: "/user-tables",
-        pro: false,
-      },
+      { name: "My Applications", path: "/dashboard/basic-tables", pro: false },
+      { name: "Applications", path: "/dashboard/data-tables", pro: false },
+      { name: "User Applications", path: "/dashboard/user-tables", pro: false },
     ],
   },
   {
     name: "Blank",
     icon: <PageIcon />,
-    path: "/blank",
+    path: "/dashboard/blank",
   },
 ];
 

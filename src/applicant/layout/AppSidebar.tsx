@@ -25,11 +25,6 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  // {
-  //   icon: <GridIcon />,
-  //   name: "Dashboard",
-  //   subItems: [{ name: "Ecommerce", path: "/", pro: false }],
-  // },
   {
     icon: <GridIcon />,
     name: "Dashboard",
@@ -38,30 +33,37 @@ const navItems: NavItem[] = [
   {
     icon: <CalenderIcon />,
     name: "Calendar",
-    path: "/calendar",
+    path: "/user-dashboard/calendar",
   },
-  // {
-  //   icon: <UserCircleIcon />,
-  //   name: "User Profile",
-  //   path: "/profile",
-  // },
   {
     name: "Forms",
     icon: <ListIcon />,
     subItems: [
-      { name: "Form Elements", path: "/form-elements", pro: false },
-      { name: "App Requirements", path: "/app-requirements", pro: false },
+      {
+        name: "Form Elements",
+        path: "/user-dashboard/form-elements",
+        pro: false,
+      },
+      {
+        name: "App Requirements",
+        path: "/user-dashboard/app-requirements",
+        pro: false,
+      },
     ],
   },
   {
     name: "Applications",
     icon: <ListIcon />,
     subItems: [
-      { name: "My Applications", path: "/basic-tables", pro: false },
-      { name: "Applications", path: "/data-tables", pro: false },
+      {
+        name: "My Applications",
+        path: "/user-dashboard/basic-tables",
+        pro: false,
+      },
+      { name: "Applications", path: "/user-dashboard/data-tables", pro: false },
       {
         name: "User Applications",
-        path: "/user-tables",
+        path: "/user-dashboard/user-tables",
         pro: false,
       },
     ],
@@ -70,9 +72,9 @@ const navItems: NavItem[] = [
     name: "Pages",
     icon: <PageIcon />,
     subItems: [
-      { name: "Blank Page", path: "/blank", pro: false },
-      { name: "404 Error", path: "/error-404", pro: false },
-      { name: "Onboarding", path: "/onboarding", pro: false },
+      { name: "Blank Page", path: "/user-dashboard/blank", pro: false },
+      { name: "404 Error", path: "/user-dashboard/error-404", pro: false },
+      { name: "Onboarding", path: "/user-dashboard/onboarding", pro: false },
     ],
   },
 ];

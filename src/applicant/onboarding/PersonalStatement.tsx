@@ -18,11 +18,11 @@ const PersonalStatement = () => {
     }
     setError("");
     // Save or validate the statement if needed
-    navigate("/onboarding/final");
+    navigate("/user-dashboard/onboarding/final");
   };
 
   const handleReturn = () => {
-    navigate("/onboarding/applied-program");
+    navigate("/user-dashboard/onboarding/applied-program");
   };
 
   return (

@@ -25,6 +25,7 @@ import UserTables from "./pages/Tables/UserTables";
 import AdminDashboard from "./admin/Dashboard/AdminDash";
 import UserDash from "./applicant/Dashboard/UserDash";
 import AppRequirements from "./applicant/Forms/AppRequirements";
+import OnboardingRoutes from "./applicant/onboarding/onboardingRoutes";
 
 export default function App() {
   return (
@@ -38,44 +39,51 @@ export default function App() {
           <Route path="/signup" element={<SignUp />} />
 
           {/* Admin Dashboard Layout */}
-          <Route element={<AppLayout />}>
-            <Route index path="/dashboard" element={<AdminDashboard />} />
+          <Route path="/dashboard" element={<AppLayout />}>
+            <Route index element={<AdminDashboard />} />
+            {/* Admin-only routes */}
+            <Route path="profile" element={<UserProfiles />} />
+            <Route path="calendar" element={<Calendar />} />
+            <Route path="blank" element={<Blank />} />
+            <Route path="form-elements" element={<FormElements />} />
+            <Route path="app-requirements" element={<AppRequirements />} />
+            <Route path="basic-tables" element={<BasicTables />} />
+            <Route path="data-tables" element={<DataTables />} />
+            <Route path="user-tables" element={<UserTables />} />
+            <Route path="alerts" element={<Alerts />} />
+            <Route path="avatars" element={<Avatars />} />
+            <Route path="badge" element={<Badges />} />
+            <Route path="buttons" element={<Buttons />} />
+            <Route path="images" element={<Images />} />
+            <Route path="videos" element={<Videos />} />
+            <Route path="line-chart" element={<LineChart />} />
+            <Route path="bar-chart" element={<BarChart />} />
+          </Route>
 
-            {/* Applicant Dashboard */}
-            <Route element={<ApplicantAppLayout />}>
-              <Route index path="/user-dashboard" element={<UserDash />} />{" "}
-            </Route>
-
-            {/* Others Page */}
-            <Route path="/profile" element={<UserProfiles />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/blank" element={<Blank />} />
-
-            {/* Forms */}
-            <Route path="/form-elements" element={<FormElements />} />
-            <Route path="/app-requirements" element={<AppRequirements />} />
-
-            {/* Tables */}
-            <Route path="/basic-tables" element={<BasicTables />} />
-            <Route path="/data-tables" element={<DataTables />} />
-            <Route path="/user-tables" element={<UserTables />} />
-
-            {/* Ui Elements */}
-            <Route path="/alerts" element={<Alerts />} />
-            <Route path="/avatars" element={<Avatars />} />
-            <Route path="/badge" element={<Badges />} />
-            <Route path="/buttons" element={<Buttons />} />
-            <Route path="/images" element={<Images />} />
-            <Route path="/videos" element={<Videos />} />
-
-            {/* Charts */}
-            <Route path="/line-chart" element={<LineChart />} />
-            <Route path="/bar-chart" element={<BarChart />} />
+          {/* Applicant Dashboard Layout */}
+          <Route path="/user-dashboard" element={<ApplicantAppLayout />}>
+            <Route index element={<UserDash />} />
+            <Route path="calendar" element={<Calendar />} />
+            <Route path="blank" element={<Blank />} />
+            <Route path="form-elements" element={<FormElements />} />
+            <Route path="app-requirements" element={<AppRequirements />} />
+            <Route path="basic-tables" element={<BasicTables />} />
+            <Route path="data-tables" element={<DataTables />} />
+            <Route path="user-tables" element={<UserTables />} />
+            <Route path="alerts" element={<Alerts />} />
+            <Route path="avatars" element={<Avatars />} />
+            <Route path="badge" element={<Badges />} />
+            <Route path="buttons" element={<Buttons />} />
+            <Route path="images" element={<Images />} />
+            <Route path="videos" element={<Videos />} />
+            <Route path="line-chart" element={<LineChart />} />
+            <Route path="bar-chart" element={<BarChart />} />
+            {/* Onboarding multi-step form */}
+            <Route path="onboarding/*" element={<OnboardingRoutes />} />
           </Route>
 
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />
-          {/* <OnboardingRoutes /> */}
         </Routes>
       </Router>
       <Toaster

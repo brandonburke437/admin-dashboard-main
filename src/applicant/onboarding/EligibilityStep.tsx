@@ -85,7 +85,7 @@ const EligibilityStep = () => {
     }
 
     // Save data logic here
-    navigate("/onboarding/emergency-contact");
+    navigate("/user-dashboard/onboarding/emergency-contact");
   };
 
   return (
