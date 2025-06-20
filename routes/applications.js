@@ -10,15 +10,7 @@ const adminMiddleware = require("../middleware/adminMiddleware");
 // @access  Private
 router.post("/", authMiddleware, async (req, res) => {
   try {
-    const disqualifiedInstitutions = ["nursing", "college of education"];
-const institutionName = req.body.appliedInstitution?.toLowerCase();
-
-if (institutionName && disqualifiedInstitutions.some(term => institutionName.includes(term))) {
-  return res.status(400).json({
-    msg: "Applicants from Nursing Training Colleges or Colleges of Education are not eligible.",
-  });
-}
-
+    
     const application = new ScholarshipApplication({
       ...req.body,
       user: req.user.id, // from JWT token

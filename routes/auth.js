@@ -11,79 +11,72 @@ router.get("/test", (req, res) => {
 });
 
 
-// @route   POST /api/auth/login
-// @desc    Login user
+// ✅ @route   POST /api/auth/login
+// ✅ @desc    Login user with email, username, or phone
 router.post("/login", async (req, res) => {
   try {
-    console.log("🔐 Authorization Header Received:", req.headers.authorization);
-    const { email, password } = req.body;
-    console.log("📩 Login attempt:", email);
+    const { identifier, password } = req.body;
 
-    let user = await User.findOne({ email });
+    // ✅ Flexible login lookup
+    const user = await User.findOne({
+      $or: [
+        { email: identifier },
+        { phone: identifier },
+        { username: identifier }
+      ]
+    });
+
     if (!user) {
-      console.log("❌ User not found");
-      return res.status(400).json({ msg: "User not found" });
-    }
-
-    console.log("✅ User found:", user.email);
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      console.log("❌ Invalid password");
       return res.status(400).json({ msg: "Invalid credentials" });
     }
 
-    if (!process.env.JWT_SECRET) {
-      console.error("❌ JWT_SECRET is not defined!");
-      return res.status(500).json({ msg: "Internal configuration error" });
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ msg: "Invalid credentials" });
     }
 
-    const token = jwt.sign(
-      { id: user._id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-    console.log("✅ Login successful");
-
-    user.password = undefined; // hide password before sending user object
+    user.password = undefined; // hide password
     res.json({ token, user });
+
   } catch (error) {
-    console.error("🔥 Login route error:", error);
-    res.status(500).json({ msg: "Server Error" });
+    console.error("Login error:", error);
+    res.status(500).json({ msg: "Server error" });
   }
 });
 
-// @route   POST /api/auth/register
-// @desc    Register a new user
-// @access  Public
+
+// ✅ @route   POST /api/auth/register
+// ✅ @desc    Register a new user with name, email, phone, username, etc.
 router.post("/register", async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, phone, username, password, role } = req.body;
 
   try {
-    let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ msg: "User already exists" });
+    // ✅ Check for email or phone or username already in use
+    const existingUser = await User.findOne({
+      $or: [{ email }, { phone }, { username }]
+    });
+
+    if (existingUser) {
+      return res.status(400).json({ msg: "Email, phone or username already taken" });
     }
 
-    user = new User({
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const user = new User({
       name,
       email,
-      password,
+      phone,
+      username,
+      password: hashedPassword,
       role: role || "user",
     });
 
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
-
     await user.save();
 
-    const payload = {
-      id: user._id,
-      role: user.role,
-    };
-
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
     res.status(201).json({
       token,
@@ -91,11 +84,13 @@ router.post("/register", async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
+        username: user.username,
         role: user.role,
       },
     });
   } catch (err) {
-    console.error(err.message);
+    console.error("Registration error:", err.message);
     res.status(500).send("Server error");
   }
 });
