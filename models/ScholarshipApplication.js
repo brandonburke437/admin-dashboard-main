@@ -6,6 +6,18 @@ const ScholarshipApplicationSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  fullName: {
+  type: String,
+  required: true,
+  trim: true,
+},
+
+idNumber: {
+  type: String,
+  required: true,
+  trim: true,
+},
+
 
   // Stage 1 – Personal Info
   fullName: String,

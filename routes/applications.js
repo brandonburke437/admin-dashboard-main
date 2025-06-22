@@ -14,8 +14,14 @@ router.post("/", authMiddleware, async (req, res) => {
       appliedInstitution,
       applicantType,
       documents = [],
-      idNumber,
+      idNumber: idNum,
+      fullName,
     } = req.body;
+
+    // ✅ Ensure fullName and idNumber are present
+    if (!fullName || !idNum) {
+      return res.status(400).json({ msg: "Full name and ID number are required." });
+    }
 
     // ✅ 1. Disqualify certain institutions (strict check)
     if (!appliedInstitution) {
@@ -63,7 +69,7 @@ router.post("/", authMiddleware, async (req, res) => {
       });
     }
 
-    // ✅ 3. Validate required documents based on applicant type
+    // ✅ 3. Validate required documents
     const missingDocs = requiredDocsMap[applicantType].filter(
       doc => !documents.some(d => d.type === doc)
     );
@@ -79,17 +85,31 @@ router.post("/", authMiddleware, async (req, res) => {
     const passportPattern = /^[A-Z0-9]{6,20}$/;
 
     if (
-      !idNumber ||
-      (!ghanaCardPattern.test(idNumber) && !passportPattern.test(idNumber))
+      !idNum ||
+      (!ghanaCardPattern.test(idNum) && !passportPattern.test(idNum))
     ) {
       return res.status(400).json({
         msg: "A valid Ghana Card (GHA-XXXXXXXXX-X) or Passport number is required.",
       });
     }
 
-    // ✅ 5. Save application
+    // ✅ 5. Prevent duplicate applications by fullName + idNumber
+    const existingApp = await ScholarshipApplication.findOne({
+      fullName,
+      idNumber: idNum,
+    });
+
+    if (existingApp) {
+      return res.status(400).json({
+        msg: "An application already exists with this full name and ID number.",
+      });
+    }
+
+    // ✅ 6. Save application
     const application = new ScholarshipApplication({
       ...req.body,
+      fullName,
+      idNumber: idNum,
       user: req.user.id,
     });
 
@@ -101,6 +121,7 @@ router.post("/", authMiddleware, async (req, res) => {
     res.status(500).json({ msg: "Server error" });
   }
 });
+
 
 
 
