@@ -10,19 +10,99 @@ const adminMiddleware = require("../middleware/adminMiddleware");
 // @access  Private
 router.post("/", authMiddleware, async (req, res) => {
   try {
-    
+    const {
+      appliedInstitution,
+      applicantType,
+      documents = [],
+      idNumber,
+    } = req.body;
+
+    // ✅ 1. Disqualify certain institutions (strict check)
+    if (!appliedInstitution) {
+      return res.status(400).json({ msg: "Institution is required" });
+    }
+
+    const disqualified = ["nursing", "teacher training", "college of education"];
+    const institution = appliedInstitution.toLowerCase();
+
+    if (disqualified.some(term => institution.includes(term))) {
+      return res.status(400).json({
+        msg: "Applicants from Nursing, Teacher Training Colleges or Colleges of Education are not eligible.",
+      });
+    }
+
+    // ✅ 2. Validate applicant type
+    const requiredDocsMap = {
+      postgraduate: [
+        "admission_letter",
+        "first_degree",
+        "cv",
+        "recommendation_letters",
+        "nss_certificate",
+        "passport_picture",
+      ],
+      undergraduate: [
+        "admission_letter",
+        "waec_results",
+        "testimonial",
+        "id_card",
+        "passport_picture",
+      ],
+      continuing: [
+        "admission_letter",
+        "transcript",
+        "id_card",
+        "passport_picture",
+        "cgpa",
+      ],
+    };
+
+    if (!applicantType || !requiredDocsMap[applicantType]) {
+      return res.status(400).json({
+        msg: "Invalid or missing applicantType. Must be one of: postgraduate, undergraduate, continuing.",
+      });
+    }
+
+    // ✅ 3. Validate required documents based on applicant type
+    const missingDocs = requiredDocsMap[applicantType].filter(
+      doc => !documents.some(d => d.type === doc)
+    );
+
+    if (missingDocs.length > 0) {
+      return res.status(400).json({
+        msg: `Missing required documents: ${missingDocs.join(", ")}`,
+      });
+    }
+
+    // ✅ 4. Validate Ghana Card or Passport Number
+    const ghanaCardPattern = /^GHA-\d{9}-\d{1}$/;
+    const passportPattern = /^[A-Z0-9]{6,20}$/;
+
+    if (
+      !idNumber ||
+      (!ghanaCardPattern.test(idNumber) && !passportPattern.test(idNumber))
+    ) {
+      return res.status(400).json({
+        msg: "A valid Ghana Card (GHA-XXXXXXXXX-X) or Passport number is required.",
+      });
+    }
+
+    // ✅ 5. Save application
     const application = new ScholarshipApplication({
       ...req.body,
-      user: req.user.id, // from JWT token
+      user: req.user.id,
     });
 
     await application.save();
     res.status(201).json({ msg: "Application submitted", application });
+
   } catch (error) {
     console.error("Application submission error:", error);
     res.status(500).json({ msg: "Server error" });
   }
 });
+
+
 
 // ✅ Get all applications for the logged-in user
 router.get("/me", authMiddleware, async (req, res) => {
