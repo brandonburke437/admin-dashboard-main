@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  username  String   @unique
+  email     String   @unique
+  phone     String   @unique
+  password  String
+  role      String   @default("user")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationship: User can have many applications
+  applications ScholarshipApplication[]
+}
+
+model ScholarshipApplication {
+  id                       String   @id @default(uuid())
+  userId                   String
+  user                     User     @relation(fields: [userId], references: [id])
+
+  // Personal Info
+  fullName                 String
+  dateOfBirth              DateTime?
+  phone                    String?
+  email                    String?
+  placeOfBirth             String?
+  region                   String?
+  district                 String?
+  gender                   String?
+  isPhysicallyChallenged   Boolean?
+  residentialAddressType   String?
+  residentialAddress       String?
+  nationality              String   @default("Ghanaian")
+
+  // Emergency Contact
+  emergencyContactName        String?
+  emergencyContactPhone       String?
+  emergencyContactEmail       String?
+  emergencyContactRelationship String?
+  emergencyContactRegion      String?
+  emergencyContactAddress     String?
+
+  // Occupation Info
+  occupation              String?
+  employerName            String?
+  companyName             String?
+
+  // Education Info
+  institution             String?
+  educationLevel          String?
+  program                 String?
+  class                   String?
+  countryOfInstitution    String?
+  yearOfEntry             Int?
+  yearOfCompletion        Int?
+
+  // Applied Program Info
+  appliedProgram          String?
+  appliedLevel            String?
+  appliedInstitution      String
+  stemOption              String?
+  duration                String?
+  appliedCountry          String?
+  tuitionFees             Float?
+  conditionalOffer        String?
+
+  // Scholarship Details
+  hasOtherScholarship     Boolean?
+  isPastGnpcBeneficiary   Boolean?
+  justification           String?
+
+  // Required for validations
+  idNumber                String
+
+  // Enum for applicant type
+  applicantType           ApplicantType
+  gpa                     Float?
+  applicationDeadline     DateTime?
+  status                  ApplicationStatus @default(pending)
+
+  documents               Document[]        // 1-to-many relation
+
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+}
+
+// Document submodel (previously array of objects)
+model Document {
+  id              String   @id @default(uuid())
+  type            String
+  fileUrl         String
+
+  applicationId   String
+  application     ScholarshipApplication @relation(fields: [applicationId], references: [id])
+}
+
+enum ApplicantType {
+  postgraduate
+  undergraduate
+  continuing
+}
+
+enum ApplicationStatus {
+  pending
+  approved
+  rejected
+}
+
+
