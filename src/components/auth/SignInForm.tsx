@@ -6,42 +6,56 @@ import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
 import toast from "react-hot-toast";
+import API from "../../utils/api"; // Adjust path based on your structure
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const navigate = useNavigate();
 
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
-    if (!email.trim()) newErrors.email = "Email is required";
-    else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email))
-      newErrors.email = "Invalid email address";
+    if (!identifier.trim())
+      newErrors.identifier = "Email, phone or username is required";
     if (!password) newErrors.password = "Password is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validate()) {
-      let role = "user";
-      if (email === "admin@gmail.com" && password === "admin") {
-        role = "admin";
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!validate()) return;
+
+  try {
+    const res = await API.post("/auth/login", {
+
+      identifier: identifier,
+      password,
+    });
+
+    const { token, user } = res.data;
+
+    // Store token in localStorage
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+
+    toast.success("Signed in successfully!");
+
+    setTimeout(() => {
+      if (user.role === "admin") {
+        navigate("/dashboard");
+      } else {
+        navigate("/user-dashboard");
       }
-      toast.success("Signed in successfully!");
-      setTimeout(() => {
-        if (role === "admin") {
-          navigate("/dashboard");
-        } else {
-          navigate("/user-dashboard");
-        }
-      }, 1500);
-    }
-  };
+    }, 1000);
+  } catch (err: any) {
+    console.error(err);
+    toast.error(err?.response?.data?.message || "Login failed");
+  }
+};
 
   return (
     <div className="flex flex-col flex-1">
@@ -121,50 +135,49 @@ export default function SignInForm() {
               </div>
             </div>
             <form onSubmit={handleSubmit}>
-              <div className="space-y-6">
-                <div>
-                  <Label>
-                    Email <span className="text-error-500">*</span>
-                  </Label>
-                  <Input
-                    placeholder="info@gmail.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  {errors.email && (
-                    <span className="text-error-500 text-xs">
-                      {errors.email}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <Label>
-                    Password <span className="text-error-500">*</span>
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <span
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
-                    >
-                      {showPassword ? (
-                        <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                      ) : (
-                        <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                      )}
-                    </span>
-                  </div>
-                  {errors.password && (
-                    <span className="text-error-500 text-xs">
-                      {errors.password}
-                    </span>
-                  )}
-                </div>
+      <div className="space-y-6">
+        <div>
+          <Label>
+            Email / Username / Phone <span className="text-error-500">*</span>
+          </Label>
+          <Input
+            placeholder="Enter email, username or phone"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)} // ✅ FIXED
+          />
+          {errors.identifier && (
+            <span className="text-error-500 text-xs">
+              {errors.identifier}
+            </span>
+          )}
+        </div>
+
+        <div>
+          <Label>
+            Password <span className="text-error-500">*</span>
+          </Label>
+          <div className="relative">
+            <Input
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+            >
+              {showPassword ? (
+                <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+              ) : (
+                <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+              )}
+            </span>
+          </div>
+          {errors.password && (
+            <span className="text-error-500 text-xs">{errors.password}</span>
+          )}
+        </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Checkbox checked={isChecked} onChange={setIsChecked} />
@@ -203,3 +216,4 @@ export default function SignInForm() {
     </div>
   );
 }
+
