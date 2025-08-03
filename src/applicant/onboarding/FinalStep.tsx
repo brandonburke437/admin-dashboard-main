@@ -51,10 +51,10 @@ const FinalStep: React.FC = () => {
             </p>
             <br />
             <p>
-              {declarationName || "(Name)"} agrees to complete the academic
+              I {declarationName || "(Name)"} agree to complete the academic
               results consent form if awarded, giving the Foundation the mandate
               to request for terminal results / transcript from the institution
-              of study. {declarationName || "(Name)"} agrees to abide by the
+              of study. I {declarationName || "(Name)"} agree to abide by the
               award rules and regulations.
             </p>
           </div>

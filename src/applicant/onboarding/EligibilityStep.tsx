@@ -90,10 +90,10 @@ const EligibilityStep = () => {
 
   return (
     <OnboardingLayout currentStep={1} totalSteps={6}>
-      <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
-        <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <div className="bg-white dark:bg-gray-900 transition-colors duration-300">
+        <div className="max-w-6xl mx-auto p-10 space-y-8">
           <ComponentCard title="Eligibility Information">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
               <div>
                 <Label>First Name</Label>
                 <input
@@ -189,7 +189,7 @@ const EligibilityStep = () => {
               </div>
               <div>
                 <Label>Physically Challenged</Label>
-                <div className="flex space-x-4">
+                <div className="flex space-x-4 w-full">
                   <Radio
                     id="physicallyChallengedYes"
                     name="physicallyChallenged"

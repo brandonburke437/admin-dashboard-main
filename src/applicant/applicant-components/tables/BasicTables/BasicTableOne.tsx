@@ -5,8 +5,9 @@ import {
   TableCell,
   TableHeader,
   TableRow,
-} from "../../ui/table";
-import Badge from "../../ui/badge/Badge";
+} from "../../../../components/ui/table";
+// import Badge from "../../ui/badge/Badge";
+import Badge from "../../../../components/ui/badge/Badge";
 
 // User application interface
 interface UserApplication {
@@ -112,7 +113,7 @@ export default function BasicTableOne() {
   const popupActive = showDeleteWarning;
 
   return (
-    <div className="overflow-hidden rounded-xl border  border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03] relative">
+    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03] relative">
       {/* Edit & Delete Controls */}
       <div
         className={`flex gap-2 p-4 justify-end ${
@@ -195,7 +196,10 @@ export default function BasicTableOne() {
                   }
                   onChange={(e) =>
                     editApp &&
-                    setEditApp({ ...editApp, applicationType: e.target.value })
+                    setEditApp({
+                      ...editApp,
+                      applicationType: e.target.value,
+                    })
                   }
                   disabled={!editApp}
                 />

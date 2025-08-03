@@ -7,8 +7,8 @@ import {
   GridIcon,
   HorizontaLDots,
   ListIcon,
-  PageIcon,
   PlugInIcon,
+  UserIcon,
 } from "../../icons";
 import { useSidebar } from "../../context/SidebarContext";
 import SidebarWidget from "./SidebarWidget";
@@ -32,18 +32,14 @@ const navItems: NavItem[] = [
     path: "/dashboard/calendar",
   },
   {
-    name: "Applications",
     icon: <ListIcon />,
-    subItems: [
-      { name: "My Applications", path: "/dashboard/basic-tables", pro: false },
-      { name: "Applications", path: "/dashboard/data-tables", pro: false },
-      { name: "User Applications", path: "/dashboard/user-tables", pro: false },
-    ],
+    name: "Manage Users",
+    path: "/dashboard/user-tables",
   },
   {
-    name: "Blank",
-    icon: <PageIcon />,
-    path: "/dashboard/blank",
+    icon: <UserIcon />,
+    name: "User Applications",
+    path: "/dashboard/data-tables",
   },
 ];
 

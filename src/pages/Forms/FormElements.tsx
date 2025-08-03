@@ -15,8 +15,8 @@ export default function FormElements() {
   return (
     <div>
       <PageMeta
-        title="React.js Form Elements Dashboard | TailAdmin - React.js Admin Dashboard Template"
-        description="This is React.js Form Elements  Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
+        title="Form Elements | GNPC Scholarship Portal"
+        description="Explore and use form elements in the GNPC Scholarship Portal. Input fields, checkboxes, radios, and more."
       />
       <PageBreadcrumb pageTitle="From Elements" />
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">

@@ -5,8 +5,11 @@ import {
   TableCell,
   TableHeader,
   TableRow,
-} from "../../../../components/ui/table/index";
-import Badge from "../../../../components/ui/badge/Badge";
+} from "../../components/ui/table/index";
+import Badge from "../../components/ui/badge/Badge";
+// import { useNavigate } from "react-router-dom";
+import { FileIcon } from "../../icons";
+import { PencilIcon } from "@heroicons/react/24/solid";
 
 // User application interface
 interface UserApplication {
@@ -59,6 +62,7 @@ export default function BasicTableOne() {
   const [editMode, setEditMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [showDeleteWarning, setShowDeleteWarning] = useState(false);
+  // const navigate = useNavigate();
 
   const handleEditMode = () => {
     setEditMode((prev) => !prev);
@@ -93,28 +97,29 @@ export default function BasicTableOne() {
   const popupActive = showDeleteWarning;
 
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03] relative">
+    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-white/[0.07] dark:bg-white/[0.04] shadow-lg relative">
       {/* Edit & Delete Controls */}
       <div
-        className={`flex gap-2 p-4 ${
+        className={`flex justify-end gap-2 p-4 border-b border-gray-100 dark:border-white/[0.07] bg-gray-50 dark:bg-gray-900/40 ${
           popupActive
             ? "blur-sm pointer-events-none select-none opacity-60"
             : ""
         }`}
       >
         <button
-          className={`px-3 py-2 rounded text-xs font-semibold ${
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-colors duration-150 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 ${
             editMode
               ? "bg-black text-white hover:bg-gray-400"
               : "bg-black text-white hover:bg-gray-700"
           }`}
           onClick={handleEditMode}
         >
+          <PencilIcon className="w-4 h-4" />
           {editMode ? "Cancel" : "Edit"}
         </button>
         {editMode && (
           <button
-            className="bg-red-500 text-white px-3 py-2 rounded text-xs font-semibold hover:bg-red-600"
+            className="bg-red-500 text-white px-4 py-2 rounded-lg text-xs font-semibold hover:bg-red-600 transition-colors duration-150 shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400/40"
             onClick={handleDelete}
             disabled={selectedIds.length === 0}
           >
@@ -126,7 +131,7 @@ export default function BasicTableOne() {
       {/* Delete Warning Popup */}
       {showDeleteWarning && (
         <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/40">
-          <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg min-w-[320px] max-w-full">
+          <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-2xl min-w-[320px] max-w-full border border-amber-100 dark:border-gray-700">
             <h3 className="text-lg font-semibold mb-4 text-amber-500">
               Warning
             </h3>
@@ -161,7 +166,7 @@ export default function BasicTableOne() {
       >
         <Table>
           {/* Table Header */}
-          <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
+          <TableHeader className="border-b border-gray-100 dark:border-white/[0.07] bg-gray-50 dark:bg-gray-900/40">
             <TableRow>
               {editMode && (
                 <TableCell
@@ -173,31 +178,31 @@ export default function BasicTableOne() {
               )}
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="px-5 py-3 font-semibold text-gray-700 text-start text-theme-xs dark:text-white/80"
               >
                 Application Type
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="px-5 py-3 font-semibold text-gray-700 text-start text-theme-xs dark:text-white/80"
               >
                 Institution
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="px-5 py-3 font-semibold text-gray-700 text-start text-theme-xs dark:text-white/80"
               >
                 Program
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="px-5 py-3 font-semibold text-gray-700 text-start text-theme-xs dark:text-white/80"
               >
                 Date
               </TableCell>
               <TableCell
                 isHeader
-                className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                className="px-5 py-3 font-semibold text-gray-700 text-start text-theme-xs dark:text-white/80"
               >
                 Status
               </TableCell>
@@ -205,9 +210,16 @@ export default function BasicTableOne() {
           </TableHeader>
 
           {/* Table Body */}
-          <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-            {applications.map((app) => (
-              <TableRow key={app.id}>
+          <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.07]">
+            {applications.map((app, idx) => (
+              <TableRow
+                key={app.id}
+                className={
+                  idx % 2 === 0
+                    ? "bg-white dark:bg-gray-900/30 hover:bg-amber-50/60 dark:hover:bg-amber-900/10"
+                    : "bg-amber-50/40 dark:bg-gray-800/30 hover:bg-amber-50/60 dark:hover:bg-amber-900/10"
+                }
+              >
                 {editMode && (
                   <TableCell className="px-2 py-2 text-center">
                     <input
@@ -220,22 +232,23 @@ export default function BasicTableOne() {
                   </TableCell>
                 )}
                 <TableCell className="px-5 py-4 sm:px-6 text-start">
-                  <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
+                  <span className="flex font-semibold text-gray-800 text-theme-base dark:text-white/90 items-center gap-2">
+                    <FileIcon className="w-5 h-5 text-amber-500" />
                     {app.applicationType}
                   </span>
                 </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                <TableCell className="px-4 py-3 text-gray-700 text-start text-theme-base dark:text-white/80">
                   {app.institution}
                 </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                <TableCell className="px-4 py-3 text-gray-700 text-start text-theme-base dark:text-white/80">
                   {app.program}
                 </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                <TableCell className="px-4 py-3 text-gray-600 text-start text-theme-base dark:text-gray-300">
                   {app.date.toLocaleDateString()}
                 </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                <TableCell className="px-4 py-3 text-start">
                   <Badge
-                    size="sm"
+                    size="md"
                     color={
                       app.status === "Approved"
                         ? "success"

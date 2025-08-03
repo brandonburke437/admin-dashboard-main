@@ -7,6 +7,8 @@ import {
 } from "../../../..//components/ui/table/index";
 
 import Badge from "../../../../components/ui/badge/Badge";
+import { useState } from "react";
+import UserProfilePanel from "../../../../components/UserProfile/UserProfilePanel";
 
 interface Order {
   id: number;
@@ -80,6 +82,8 @@ const tableData: Order[] = [
 ];
 
 export default function UserTable() {
+  const [showProfile, setShowProfile] = useState(false);
+
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="max-w-full overflow-x-auto">
@@ -87,6 +91,7 @@ export default function UserTable() {
           {/* Table Header */}
           <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
             <TableRow>
+              {/* ...existing code... */}
               <TableCell
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
@@ -97,19 +102,19 @@ export default function UserTable() {
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Email {/* Changed from Role to Email */}
+                Email
               </TableCell>
               <TableCell
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Date {/* Changed from Project Name to Date */}
+                Date
               </TableCell>
               <TableCell
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Scholarship Type {/* Changed from Team */}
+                Scholarship Type
               </TableCell>
               <TableCell
                 isHeader
@@ -121,7 +126,7 @@ export default function UserTable() {
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Action {/* Changed from Budget */}
+                Action
               </TableCell>
             </TableRow>
           </TableHeader>
@@ -148,13 +153,13 @@ export default function UserTable() {
                   </div>
                 </TableCell>
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  {order.user.email} {/* Display Email */}
+                  {order.user.email}
                 </TableCell>
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  {order.Date.toLocaleDateString()} {/* Display Date */}
+                  {order.Date.toLocaleDateString()}
                 </TableCell>
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  {order.scholarshipType} {/* Display Scholarship Type */}
+                  {order.scholarshipType}
                 </TableCell>
                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                   <Badge
@@ -172,10 +177,10 @@ export default function UserTable() {
                 </TableCell>
                 <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                   <div className="flex gap-2">
-                    <button className="text-blue-500 hover:underline">
-                      Edit
-                    </button>
-                    <button className="text-green-500 hover:underline">
+                    <button
+                      className="text-blue-500 hover:underline"
+                      onClick={() => setShowProfile(true)}
+                    >
                       View
                     </button>
                   </div>
@@ -185,6 +190,13 @@ export default function UserTable() {
           </TableBody>
         </Table>
       </div>
+
+      {/* Modal for User Profile */}
+      {showProfile && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <UserProfilePanel onClose={() => setShowProfile(false)} />
+        </div>
+      )}
     </div>
   );
 }

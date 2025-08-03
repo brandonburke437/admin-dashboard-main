@@ -182,8 +182,60 @@ export default function SignUpForm() {
                   </Label>
                   <PhoneInput
                     countries={[
-                      { code: "GH", dialCode: "+233" },
-                      { code: "NG", dialCode: "+234" },
+                      { code: "DZ", dialCode: "+213" }, // Algeria
+                      { code: "AO", dialCode: "+244" }, // Angola
+                      { code: "BJ", dialCode: "+229" }, // Benin
+                      { code: "BW", dialCode: "+267" }, // Botswana
+                      { code: "BF", dialCode: "+226" }, // Burkina Faso
+                      { code: "BI", dialCode: "+257" }, // Burundi
+                      { code: "CM", dialCode: "+237" }, // Cameroon
+                      { code: "CV", dialCode: "+238" }, // Cape Verde
+                      { code: "CF", dialCode: "+236" }, // Central African Republic
+                      { code: "TD", dialCode: "+235" }, // Chad
+                      { code: "KM", dialCode: "+269" }, // Comoros
+                      { code: "CG", dialCode: "+242" }, // Congo
+                      { code: "CD", dialCode: "+243" }, // Congo (DRC)
+                      { code: "CI", dialCode: "+225" }, // Côte d'Ivoire
+                      { code: "DJ", dialCode: "+253" }, // Djibouti
+                      { code: "EG", dialCode: "+20" }, // Egypt
+                      { code: "GQ", dialCode: "+240" }, // Equatorial Guinea
+                      { code: "ER", dialCode: "+291" }, // Eritrea
+                      { code: "SZ", dialCode: "+268" }, // Eswatini
+                      { code: "ET", dialCode: "+251" }, // Ethiopia
+                      { code: "GA", dialCode: "+241" }, // Gabon
+                      { code: "GM", dialCode: "+220" }, // Gambia
+                      { code: "GH", dialCode: "+233" }, // Ghana
+                      { code: "GN", dialCode: "+224" }, // Guinea
+                      { code: "GW", dialCode: "+245" }, // Guinea-Bissau
+                      { code: "KE", dialCode: "+254" }, // Kenya
+                      { code: "LS", dialCode: "+266" }, // Lesotho
+                      { code: "LR", dialCode: "+231" }, // Liberia
+                      { code: "LY", dialCode: "+218" }, // Libya
+                      { code: "MG", dialCode: "+261" }, // Madagascar
+                      { code: "MW", dialCode: "+265" }, // Malawi
+                      { code: "ML", dialCode: "+223" }, // Mali
+                      { code: "MR", dialCode: "+222" }, // Mauritania
+                      { code: "MU", dialCode: "+230" }, // Mauritius
+                      { code: "MA", dialCode: "+212" }, // Morocco
+                      { code: "MZ", dialCode: "+258" }, // Mozambique
+                      { code: "NA", dialCode: "+264" }, // Namibia
+                      { code: "NE", dialCode: "+227" }, // Niger
+                      { code: "NG", dialCode: "+234" }, // Nigeria
+                      { code: "RW", dialCode: "+250" }, // Rwanda
+                      { code: "ST", dialCode: "+239" }, // Sao Tome and Principe
+                      { code: "SN", dialCode: "+221" }, // Senegal
+                      { code: "SC", dialCode: "+248" }, // Seychelles
+                      { code: "SL", dialCode: "+232" }, // Sierra Leone
+                      { code: "SO", dialCode: "+252" }, // Somalia
+                      { code: "ZA", dialCode: "+27" }, // South Africa
+                      { code: "SS", dialCode: "+211" }, // South Sudan
+                      { code: "SD", dialCode: "+249" }, // Sudan
+                      { code: "TZ", dialCode: "+255" }, // Tanzania
+                      { code: "TG", dialCode: "+228" }, // Tunisia
+                      { code: "UG", dialCode: "+256" }, // Uganda
+                      { code: "EH", dialCode: "+212" }, // Western Sahara
+                      { code: "ZM", dialCode: "+260" }, // Zambia
+                      { code: "ZW", dialCode: "+263" }, // Zimbabwe
                     ]}
                     value={phone}
                     onChange={handlePhoneChange}

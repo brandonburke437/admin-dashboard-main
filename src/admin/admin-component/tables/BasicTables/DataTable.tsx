@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 
 const initialData = [
   {
@@ -110,6 +111,7 @@ const initialData = [
 ];
 
 export default function DataTable() {
+  const location = useLocation();
   const [tableData, setTableData] = useState(initialData);
   const [search, setSearch] = useState("");
   const [editMode, setEditMode] = useState(false);
@@ -123,6 +125,18 @@ export default function DataTable() {
     applicationType: "All",
     applicationId: "",
   });
+
+  // Read status from query string
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const statusParam = params.get("status");
+    if (statusParam) {
+      setFilters((prev) => ({
+        ...prev,
+        status: statusParam.charAt(0).toUpperCase() + statusParam.slice(1),
+      }));
+    }
+  }, [location.search]);
   const [showDeleteWarning, setShowDeleteWarning] = useState(false);
   const [viewedApplication, setViewedApplication] = useState<any>(null);
   const [showAssignModal, setShowAssignModal] = useState(false);
@@ -658,82 +672,115 @@ export default function DataTable() {
                 <h3 className="text-lg font-semibold text-amber-600 dark:text-amber-400 mb-2">
                   Personal Information
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm">
-                  <div>
-                    <span className="font-medium">Name:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.eligibility?.firstName}{" "}
-                      {viewedApplication.eligibility?.lastName}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Date of Birth:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.eligibility?.dateOfBirth}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Phone:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.eligibility?.phone}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Email:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.eligibility?.email}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Birth Place:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.eligibility?.birthPlace}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Physically Challenged:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.eligibility?.physicallyChallenged}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Gender:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.eligibility?.gender}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Region:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.eligibility?.region}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">District:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.eligibility?.district}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Address Type:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.eligibility?.residentAddressType}
-                    </span>
-                  </div>
-                  <div className="col-span-2">
-                    <span className="font-medium">Address:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.eligibility?.residentAddress}
-                    </span>
-                  </div>
-                  {viewedApplication.eligibility?.residentGPS && (
-                    <div className="col-span-2">
-                      <span className="font-medium">GPS:</span>{" "}
-                      <span className="dark:text-white">
-                        {viewedApplication.eligibility?.residentGPS}
-                      </span>
+                <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 bg-white dark:bg-gray-900 mb-4">
+                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        First Name
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.eligibility?.firstName}
+                      </p>
                     </div>
-                  )}
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Last Name
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.eligibility?.lastName}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Email address
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.eligibility?.email}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Phone
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.eligibility?.phone}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Date of Birth
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.eligibility?.dateOfBirth}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Birth Place
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.eligibility?.birthPlace}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Gender
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.eligibility?.gender}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Physically Challenged
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.eligibility?.physicallyChallenged}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Region
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.eligibility?.region}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        District
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.eligibility?.district}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Address Type
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.eligibility?.residentAddressType}
+                      </p>
+                    </div>
+                    <div className="col-span-2">
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Address
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.eligibility?.residentAddress}
+                      </p>
+                    </div>
+                    {viewedApplication.eligibility?.residentGPS && (
+                      <div className="col-span-2">
+                        <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                          GPS
+                        </p>
+                        <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                          {viewedApplication.eligibility?.residentGPS}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </section>
               {/* Emergency Contact */}
@@ -741,66 +788,88 @@ export default function DataTable() {
                 <h3 className="text-lg font-semibold text-amber-600 dark:text-amber-400 mb-2">
                   Emergency Contact
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm">
-                  <div>
-                    <span className="font-medium">Name:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.emergencyContact?.name}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Relationship:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.emergencyContact?.relationship}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Phone:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.emergencyContact?.phone}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Email:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.emergencyContact?.email}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Address Type:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.emergencyContact?.addressType}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Address:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.emergencyContact?.address}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Region:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.emergencyContact?.region}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">District:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.emergencyContact?.district}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Occupation:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.emergencyContact?.occupation}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Employer:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.emergencyContact?.employer}
-                    </span>
+                <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 bg-white dark:bg-gray-900 mb-4">
+                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Name
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.emergencyContact?.name}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Relationship
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.emergencyContact?.relationship}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Phone
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.emergencyContact?.phone}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Email
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.emergencyContact?.email}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Address Type
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.emergencyContact?.addressType}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Address
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.emergencyContact?.address}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Region
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.emergencyContact?.region}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        District
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.emergencyContact?.district}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Occupation
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.emergencyContact?.occupation}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Employer
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.emergencyContact?.employer}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </section>
@@ -809,150 +878,188 @@ export default function DataTable() {
                 <h3 className="text-lg font-semibold text-amber-600 dark:text-amber-400 mb-2">
                   Educational History
                 </h3>
-                <ul className="space-y-2">
-                  {viewedApplication.education?.map((ed: any, idx: number) => (
-                    <li
-                      key={idx}
-                      className="bg-amber-50 dark:bg-gray-800 rounded p-3 border border-amber-100 dark:border-amber-900"
-                    >
-                      <div>
-                        <span className="font-medium">Institution:</span>{" "}
-                        <span className="dark:text-white">
-                          {ed.institution}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="font-medium">Level:</span>{" "}
-                        <span className="dark:text-white">{ed.level}</span>
-                      </div>
-                      <div>
-                        <span className="font-medium">Programme:</span>{" "}
-                        <span className="dark:text-white">{ed.programme}</span>
-                      </div>
-                      <div>
-                        <span className="font-medium">Class:</span>{" "}
-                        <span className="dark:text-white">{ed.class}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+                <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 bg-white dark:bg-gray-900 mb-4">
+                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
+                    {viewedApplication.education?.map(
+                      (ed: any, idx: number) => (
+                        <div key={idx} className="bg-transparent">
+                          <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                            Institution
+                          </p>
+                          <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                            {ed.institution}
+                          </p>
+                          <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400 mt-2">
+                            Level
+                          </p>
+                          <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                            {ed.level}
+                          </p>
+                          <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400 mt-2">
+                            Programme
+                          </p>
+                          <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                            {ed.programme}
+                          </p>
+                          <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400 mt-2">
+                            Class
+                          </p>
+                          <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                            {ed.class}
+                          </p>
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
               </section>
               {/* Uploaded Documents */}
               <section>
                 <h3 className="text-lg font-semibold text-amber-600 dark:text-amber-400 mb-2">
                   Uploaded Documents
                 </h3>
-                <ul className="space-y-2">
-                  {viewedApplication.uploadedDocuments?.map((doc: any) => (
-                    <li key={doc.name}>
-                      <a
-                        href={doc.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-amber-700 hover:text-amber-900 dark:text-amber-400 dark:hover:text-amber-200 underline font-medium transition"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                          viewBox="0 0 24 24"
+                <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 bg-white dark:bg-gray-900 mb-4">
+                  <ul className="space-y-2">
+                    {viewedApplication.uploadedDocuments?.map((doc: any) => (
+                      <li key={doc.name}>
+                        <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                          {doc.name}
+                        </p>
+                        <a
+                          href={doc.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-amber-700 hover:text-amber-900 dark:text-amber-400 dark:hover:text-amber-200 underline font-medium transition"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 4v16m8-8H4"
-                          />
-                        </svg>
-                        {doc.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M12 4v16m8-8H4"
+                            />
+                          </svg>
+                          Download
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </section>
               {/* Applied Program */}
               <section>
                 <h3 className="text-lg font-semibold text-amber-600 dark:text-amber-400 mb-2">
                   Applied Program
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm">
-                  <div>
-                    <span className="font-medium">Program:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.appliedProgram?.program}
-                    </span>
+                <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 bg-white dark:bg-gray-900 mb-4">
+                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Program
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.appliedProgram?.program}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Level
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.appliedProgram?.level}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Institution
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.appliedProgram?.institution}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        STEM/Non-STEM
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.appliedProgram?.stemType}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Duration
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.appliedProgram?.duration}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Country
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.appliedProgram?.country}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Tuition
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.appliedProgram?.tuition}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Offer Status
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.appliedProgram?.offerStatus}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        On Scholarship
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.appliedProgram?.onScholarship}
+                      </p>
+                    </div>
+                    {viewedApplication.appliedProgram?.onScholarship ===
+                      "Yes" && (
+                      <>
+                        <div>
+                          <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                            Scholarship Name
+                          </p>
+                          <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                            {viewedApplication.appliedProgram?.scholarshipName}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                            Scholarship Value
+                          </p>
+                          <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                            {viewedApplication.appliedProgram?.scholarshipValue}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                            Scholarship Body
+                          </p>
+                          <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                            {viewedApplication.appliedProgram?.scholarshipBody}
+                          </p>
+                        </div>
+                      </>
+                    )}
                   </div>
-                  <div>
-                    <span className="font-medium">Level:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.appliedProgram?.level}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Institution:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.appliedProgram?.institution}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">STEM/Non-STEM:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.appliedProgram?.stemType}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Duration:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.appliedProgram?.duration}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Country:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.appliedProgram?.country}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Tuition:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.appliedProgram?.tuition}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Offer Status:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.appliedProgram?.offerStatus}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">On Scholarship:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.appliedProgram?.onScholarship}
-                    </span>
-                  </div>
-                  {viewedApplication.appliedProgram?.onScholarship ===
-                    "Yes" && (
-                    <>
-                      <div>
-                        <span className="font-medium">Scholarship Name:</span>{" "}
-                        <span className="dark:text-white">
-                          {viewedApplication.appliedProgram?.scholarshipName}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="font-medium">Scholarship Value:</span>{" "}
-                        <span className="dark:text-white">
-                          {viewedApplication.appliedProgram?.scholarshipValue}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="font-medium">Scholarship Body:</span>{" "}
-                        <span className="dark:text-white">
-                          {viewedApplication.appliedProgram?.scholarshipBody}
-                        </span>
-                      </div>
-                    </>
-                  )}
                 </div>
               </section>
               {/* Personal Statement */}
@@ -969,18 +1076,26 @@ export default function DataTable() {
                 <h3 className="text-lg font-semibold text-amber-600 dark:text-amber-400 mb-2">
                   Declaration
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm">
-                  <div>
-                    <span className="font-medium">Name:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.declaration?.name}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="font-medium">Confirmed:</span>{" "}
-                    <span className="dark:text-white">
-                      {viewedApplication.declaration?.confirmed ? "Yes" : "No"}
-                    </span>
+                <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 bg-white dark:bg-gray-900 mb-4">
+                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Name
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.declaration?.name}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                        Confirmed
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                        {viewedApplication.declaration?.confirmed
+                          ? "Yes"
+                          : "No"}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </section>

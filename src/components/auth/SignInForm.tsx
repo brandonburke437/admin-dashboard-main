@@ -6,7 +6,7 @@ import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
 import toast from "react-hot-toast";
-import API from "../../utils/api"; // Adjust path based on your structure
+import API from "../../utils/api";
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,37 +25,36 @@ export default function SignInForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  if (!validate()) return;
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
 
-  try {
-    const res = await API.post("/auth/login", {
+    try {
+      const res = await API.post("/auth/login", {
+        identifier: identifier,
+        password,
+      });
 
-      identifier: identifier,
-      password,
-    });
+      const { token, user } = res.data;
 
-    const { token, user } = res.data;
+      // Store token in localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
 
-    // Store token in localStorage
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(user));
+      toast.success("Signed in successfully!");
 
-    toast.success("Signed in successfully!");
-
-    setTimeout(() => {
-      if (user.role === "admin") {
-        navigate("/dashboard");
-      } else {
-        navigate("/user-dashboard");
-      }
-    }, 1000);
-  } catch (err: any) {
-    console.error(err);
-    toast.error(err?.response?.data?.message || "Login failed");
-  }
-};
+      setTimeout(() => {
+        if (user.role === "admin") {
+          navigate("/dashboard");
+        } else {
+          navigate("/user-dashboard");
+        }
+      }, 1000);
+    } catch (err: any) {
+      console.error(err);
+      toast.error(err?.response?.data?.message || "Login failed");
+    }
+  };
 
   return (
     <div className="flex flex-col flex-1">
@@ -135,49 +134,52 @@ const handleSubmit = async (e: React.FormEvent) => {
               </div>
             </div>
             <form onSubmit={handleSubmit}>
-      <div className="space-y-6">
-        <div>
-          <Label>
-            Email / Username / Phone <span className="text-error-500">*</span>
-          </Label>
-          <Input
-            placeholder="Enter email, username or phone"
-            value={identifier}
-            onChange={(e) => setIdentifier(e.target.value)} // ✅ FIXED
-          />
-          {errors.identifier && (
-            <span className="text-error-500 text-xs">
-              {errors.identifier}
-            </span>
-          )}
-        </div>
+              <div className="space-y-6">
+                <div>
+                  <Label>
+                    Email / Username / Phone{" "}
+                    <span className="text-error-500">*</span>
+                  </Label>
+                  <Input
+                    placeholder="Enter email, username or phone"
+                    value={identifier}
+                    onChange={(e) => setIdentifier(e.target.value)} // ✅ FIXED
+                  />
+                  {errors.identifier && (
+                    <span className="text-error-500 text-xs">
+                      {errors.identifier}
+                    </span>
+                  )}
+                </div>
 
-        <div>
-          <Label>
-            Password <span className="text-error-500">*</span>
-          </Label>
-          <div className="relative">
-            <Input
-              type={showPassword ? "text" : "password"}
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <span
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
-            >
-              {showPassword ? (
-                <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-              ) : (
-                <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-              )}
-            </span>
-          </div>
-          {errors.password && (
-            <span className="text-error-500 text-xs">{errors.password}</span>
-          )}
-        </div>
+                <div>
+                  <Label>
+                    Password <span className="text-error-500">*</span>
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <span
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+                    >
+                      {showPassword ? (
+                        <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                      ) : (
+                        <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                      )}
+                    </span>
+                  </div>
+                  {errors.password && (
+                    <span className="text-error-500 text-xs">
+                      {errors.password}
+                    </span>
+                  )}
+                </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Checkbox checked={isChecked} onChange={setIsChecked} />
@@ -216,4 +218,3 @@ const handleSubmit = async (e: React.FormEvent) => {
     </div>
   );
 }
-

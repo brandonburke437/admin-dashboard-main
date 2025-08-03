@@ -3,15 +3,13 @@ import { useSidebar } from "../../context/SidebarContext";
 import { useState, useRef, useCallback, useEffect } from "react";
 import SidebarWidget from "./SidebarWidget";
 
-// Assume these icons are imported from an icon library
 import {
   CalenderIcon,
   ChevronDownIcon,
-  GridIcon,
   HorizontaLDots,
-  ListIcon,
   PageIcon,
   PlugInIcon,
+  FileIcon,
 } from "../../icons";
 
 // BoxCubeIcon,
@@ -26,57 +24,36 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   {
-    icon: <GridIcon />,
+    icon: <PageIcon />,
     name: "Dashboard",
     path: "/user-dashboard",
   },
+  {
+    icon: <FileIcon />,
+    name: "My Applications",
+    path: "/user-dashboard/basic-tables",
+  },
+
   {
     icon: <CalenderIcon />,
     name: "Calendar",
     path: "/user-dashboard/calendar",
   },
-  {
-    name: "Forms",
-    icon: <ListIcon />,
-    subItems: [
-      {
-        name: "Form Elements",
-        path: "/user-dashboard/form-elements",
-        pro: false,
-      },
-      {
-        name: "App Requirements",
-        path: "/user-dashboard/app-requirements",
-        pro: false,
-      },
-    ],
-  },
-  {
-    name: "Applications",
-    icon: <ListIcon />,
-    subItems: [
-      {
-        name: "My Applications",
-        path: "/user-dashboard/basic-tables",
-        pro: false,
-      },
-      { name: "Applications", path: "/user-dashboard/data-tables", pro: false },
-      {
-        name: "User Applications",
-        path: "/user-dashboard/user-tables",
-        pro: false,
-      },
-    ],
-  },
-  {
-    name: "Pages",
-    icon: <PageIcon />,
-    subItems: [
-      { name: "Blank Page", path: "/user-dashboard/blank", pro: false },
-      { name: "404 Error", path: "/user-dashboard/error-404", pro: false },
-      { name: "Onboarding", path: "/user-dashboard/onboarding", pro: false },
-    ],
-  },
+
+  // {
+  //   icon: <CalenderIcon />,
+  //   name: "New Application",
+  //   path: "/user-dashboard/onboarding",
+  // },
+  // {
+  //   name: "Pages",
+  //   icon: <PageIcon />,
+  //   subItems: [
+  //     { name: "Blank Page", path: "/user-dashboard/blank", pro: false },
+  //     { name: "404 Error", path: "/user-dashboard/error-404", pro: false },
+
+  //   ],
+  // },
 ];
 
 const othersItems: NavItem[] = [

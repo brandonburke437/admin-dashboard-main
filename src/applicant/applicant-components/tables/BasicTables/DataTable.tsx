@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 
 const initialData = [
   {
@@ -128,6 +129,21 @@ export default function DataTable() {
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [assigningAppId, setAssigningAppId] = useState<string | null>(null);
   const [selectedStaff, setSelectedStaff] = useState("");
+
+  // Read status from query string
+  const location = useLocation();
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const statusParam = params.get("status");
+    if (statusParam) {
+      setFilters((f) => ({
+        ...f,
+        status:
+          statusParam.charAt(0).toUpperCase() +
+          statusParam.slice(1).toLowerCase(),
+      }));
+    }
+  }, [location.search]);
 
   // Unique options for dropdowns
   const statusOptions = [

@@ -6,7 +6,10 @@ import UserTable from "../../admin/admin-component/tables/BasicTables/UsersTable
 export default function UserTables() {
   return (
     <>
-      <PageMeta title="Users | admin dashboard" description="" />
+      <PageMeta
+        title="User Accounts | GNPC Scholarship Portal"
+        description="Manage user accounts and profiles in the GNPC Scholarship Portal. View, edit, and administer user access."
+      />
       <PageBreadcrumb pageTitle="User Accounts" />
       <div className="space-y-6">
         <ComponentCard title="Users Profiles">

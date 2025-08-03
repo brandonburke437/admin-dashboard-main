@@ -115,7 +115,8 @@ export default function MonthlyTarget() {
           </span>
         </div>
         <p className="mx-auto mt-10 w-full max-w-[380px] text-center text-sm text-gray-500 sm:text-base">
-          Your application is in review. Please check back later for updates.
+          Your recent application is in review. Please check back later for
+          updates.
         </p>
       </div>
 
