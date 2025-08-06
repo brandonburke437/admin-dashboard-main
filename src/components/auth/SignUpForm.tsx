@@ -6,6 +6,7 @@ import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import PhoneInput from "../form/group-input/PhoneInput";
 import toast from "react-hot-toast";
+import API from "../../utils/api"; 
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -46,15 +47,31 @@ export default function SignUpForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validate()) {
-      toast.success("Your Account has been created successfully!");
-      setTimeout(() => {
-        navigate("/signin");
-      }, 2000); // 2 seconds delay before redirecting
-    }
-  };
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!validate()) return;
+
+  const name = `${fname} ${lname}`.trim();
+  const username = `${fname.toLowerCase()}${Math.floor(Math.random() * 1000)}`; // Simple username generator
+
+  try {
+    const res = await API.post("/auth/register", {
+      name,
+      email,
+      phone,
+      username,
+      password,
+    });
+
+    toast.success("Account created successfully!");
+    setTimeout(() => {
+      navigate("/signin");
+    }, 2000);
+  } catch (err: any) {
+    console.error(err);
+    toast.error(err?.response?.data?.msg || "Registration failed");
+  }
+};
 
   return (
     <div className="flex flex-col flex-1 w-full overflow-y-auto lg:w-1/2 no-scrollbar">
