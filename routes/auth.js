@@ -8,7 +8,7 @@ const router = express.Router();   // 📦 Set up the Express router
 
 // ✅ TEST ROUTE
 router.get("/test", (req, res) => {
-  res.send("✅ Server is working and routing is set up correctly (using Prisma)!");
+  res.send("Server is working and routing is set up correctly (using Prisma)!");
 });
 
 // ✅ LOGIN ROUTE
