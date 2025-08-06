@@ -1,7 +1,9 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { PrismaClient } = require("../generated/prisma");
+//const { PrismaClient } = require("../generated/prisma");
+const { PrismaClient } = require("@prisma/client"); 
+
 
 const prisma = new PrismaClient(); // 🔌 Initialize Prisma client
 const router = express.Router();   // 📦 Set up the Express router
@@ -45,7 +47,7 @@ router.post("/login", async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    // 🧼 Remove password before sending user object
+    //  Remove password before sending user object
     const { password: _, ...userWithoutPassword } = user;
 
     res.json({ token, user: userWithoutPassword });
@@ -55,13 +57,14 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ msg: "Server error" });
   }
 });
-
-// ✅ REGISTER ROUTE
+//Register new user 
+// REGISTER ROUTE
 router.post("/register", async (req, res) => {
   const { name, email, phone, username, password, role } = req.body;
 
   try {
-    // 🔍 Check for existing user by email, phone, or username
+    console.log("Register route hit:", req.body);
+
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [
@@ -73,14 +76,13 @@ router.post("/register", async (req, res) => {
     });
 
     if (existingUser) {
+      console.log("❌ User already exists");
       return res.status(400).json({ msg: "Email, phone or username already taken" });
     }
 
-    // 🔐 Hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // ✅ Create user in database
     const newUser = await prisma.user.create({
       data: {
         name,
@@ -92,23 +94,23 @@ router.post("/register", async (req, res) => {
       },
     });
 
-    // 🪙 Create token
+    console.log("✅ New user created:", newUser);
+
     const token = jwt.sign(
       { id: newUser.id, role: newUser.role },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
-    // 🧼 Remove password before sending response
     const { password: _, ...userWithoutPassword } = newUser;
 
-    res.status(201).json({
+    return res.status(201).json({
       token,
       user: userWithoutPassword,
     });
   } catch (err) {
-    console.error("Registration error:", err.message);
-    res.status(500).send("Server error");
+    console.error("🚨 Registration error:", err);
+    return res.status(500).json({ msg: "Server error" });
   }
 });
 
