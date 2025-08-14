@@ -5,20 +5,20 @@ const jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client"); 
 
 
-const prisma = new PrismaClient(); // 🔌 Initialize Prisma client
-const router = express.Router();   // 📦 Set up the Express router
+const prisma = new PrismaClient(); // Initialize Prisma client
+const router = express.Router();   // Set up the Express router
 
-// ✅ TEST ROUTE
+// TEST ROUTE
 router.get("/test", (req, res) => {
   res.send("Server is working and routing is set up correctly (using Prisma)!");
 });
 
-// ✅ LOGIN ROUTE
+// LOGIN ROUTE
 router.post("/login", async (req, res) => {
   try {
     const { identifier, password } = req.body;
 
-    // 🔍 Find user by email OR phone OR username
+    // Find user by email OR phone OR username
     const user = await prisma.user.findFirst({
       where: {
         OR: [
@@ -29,18 +29,18 @@ router.post("/login", async (req, res) => {
       },
     });
 
-    // ❌ If no user found
+    //  If no user found
     if (!user) {
       return res.status(400).json({ msg: "Invalid credentials" });
     }
 
-    // 🔐 Compare provided password with hashed password
+    //  Compare provided password with hashed password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ msg: "Invalid credentials" });
     }
 
-    // 🪙 Create JWT token with user id and role
+    //  Create JWT token with user id and role
     const token = jwt.sign(
       { id: user.id, role: user.role },
       process.env.JWT_SECRET,
@@ -76,7 +76,7 @@ router.post("/register", async (req, res) => {
     });
 
     if (existingUser) {
-      console.log("❌ User already exists");
+      console.log("User already exists");
       return res.status(400).json({ msg: "Email, phone or username already taken" });
     }
 
@@ -94,7 +94,7 @@ router.post("/register", async (req, res) => {
       },
     });
 
-    console.log("✅ New user created:", newUser);
+    console.log("New user created:", newUser);
 
     const token = jwt.sign(
       { id: newUser.id, role: newUser.role },
@@ -109,7 +109,7 @@ router.post("/register", async (req, res) => {
       user: userWithoutPassword,
     });
   } catch (err) {
-    console.error("🚨 Registration error:", err);
+    console.error("Registration error:", err);
     return res.status(500).json({ msg: "Server error" });
   }
 });

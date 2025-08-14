@@ -16,17 +16,17 @@ app.use(express.json());
 
 // Routes
 app.use("/api/auth", require("./routes/auth"));
-app.use("/api", require("./routes/admin")); // ✅ Now it’s safe here!
+app.use("/api", require("./routes/admin")); //  Now it’s safe here!
 app.use("/api/applications", require("./routes/applications"));
 
 // Default route
 app.get("/", (req, res) => {
-  res.send("🎓 Scholarship API is running...");
+  res.send("Scholarship API is running...");
 });
 
 // Protected route example
 app.get("/api/protected", authMiddleware, (req, res) => {
-  res.json({ msg: `Welcome 👋, your user ID is: ${req.user.id}` });
+  res.json({ msg: `Welcome, your user ID is: ${req.user.id}` });
 });
 
 // Admin dashboard

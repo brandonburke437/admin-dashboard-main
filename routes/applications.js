@@ -268,7 +268,7 @@ router.get("/search", authMiddleware, async (req, res) => {
       }
     });
 
-    // 🔐 If not admin, filter to only this user's applications
+    // If not admin, filter to only this user's applications
     const filteredApps = req.user.role === "admin"
       ? applications
       : applications.filter(app => app.user.id === req.user.id);
@@ -310,12 +310,12 @@ router.get("/:id", authMiddleware, async (req, res) => {
       },
     });
 
-    // 🔎 Not found
+    // Not found
     if (!application) {
       return res.status(404).json({ msg: "Application not found" });
     }
 
-    // 🔐 Access control — only the owner or an admin can view it
+    // Access control — only the owner or an admin can view it
     const isOwner = application.user.id === req.user.id;
     const isAdmin = req.user.role === "admin";
 
